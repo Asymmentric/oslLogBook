@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="css/register.css"> -->
+    <style>
+        *{
+    box-sizing: content-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sec1{
+    
+    width: 300px;
+    margin: auto;
+    margin-top: 15vh;
+    background-color: rgb(65, 59, 59);
+    border: 1px solid red;
+}
+
+
+
+.box{
+
+    /* border: 1px solid yellow; */
+
+    align-content: center;
+    display: flex;
+    width: 100%;
+    margin: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.right{
+    /* border: 1px solid green; */
+    margin:auto;
+}
+
+input{
+    border: 2px solid gray;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.regBtn{
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#reg{
+    background-color: rgb(9, 92, 9);
+    border: 1px solid rgb(1, 41, 1);
+    border-radius: 5px;
+}
+    </style>
+</head>
+<body>
+    <section class="sec1">
+        <form action="/register" method="post">
+            <div class="container">
+                <div class="box">
+                    <!-- <div class="left">
+                        <span>USN</span>
+                    </div> -->
+                    <div class="right">
+                        <input type="text" name="usn" placeholder='USN' id="usn">
+                    </div>
+                </div>
+                <div class="box">
+                    <!-- <div class="left">
+                        <span>Email</span>
+                    </div> -->
+                    <div class="right">
+                        <input type="text" name="email" Placeholder='EMAIL' id="email">
+                    </div>
+                </div>
+                <div class="box">
+                    <!-- <div class="left">
+                        <span>Name</span>
+                    </div> -->
+                    <div class="right">
+                        <input type="text" name="name" placeholder='NAME' id="name">
+                    </div>
+                </div>
+                <div class="box">
+                    <!-- <div class="left">
+                        <span>Password</span>
+                    </div> -->
+                    <div class="right">
+                        <input type="password" name="password" placeholder="PASSWORD" id="pwd">
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="regBtn">
+                        <input type="submit" value="Register" id="reg">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!-- <script >
+        const ip=document.getElementsByTagName('input')
+
+
+// console.log(password)
+
+ip[4].addEventListener('submit',(e)=>{
+    let usn=ip[0].value
+let email=ip[1].value
+let userName=ip[2].value
+let password=ip[3].value
+    let xhr=new XMLHttpRequest()
+    xhr.open('post','/register',true)
+    xhr.setRequestHeader('Content-Type','application/json')
+    xhr.send(JSON.stringify({usn,name:userName,email:email,password}))
+    xhr.onload=()=>{
+        console.log(xhr.response)
+    }
+})
+    </script> -->
+</body>
+</html>

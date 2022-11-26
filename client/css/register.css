@@ -1,0 +1,50 @@
+*{
+    box-sizing: content-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sec1{
+    
+    width: 300px;
+    margin: auto;
+    margin-top: 15vh;
+    background-color: rgb(65, 59, 59);
+    border: 1px solid red;
+}
+
+
+
+.box{
+
+    /* border: 1px solid yellow; */
+
+    align-content: center;
+    display: flex;
+    width: 100%;
+    margin: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.right{
+    /* border: 1px solid green; */
+    margin:auto;
+}
+
+input{
+    border: 2px solid gray;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.regBtn{
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#reg{
+    background-color: rgb(9, 92, 9);
+    border: 1px solid rgb(1, 41, 1);
+    border-radius: 5px;
+}
