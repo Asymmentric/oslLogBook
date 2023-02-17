@@ -1,8 +1,6 @@
 const mongoose=require('mongoose')
 
-// const dbLink='mongodb://osladmin:jr84Dsfsd93kg48sJ@localhost:9091'
-
-const dbLink=`mongodb://logbookosl:uoN9adNHZD0MHLpEXsUjjy64ADq6KZQFhNw0geIF7Jj2WAmpPsftNU5mxyz4BUQlIoxZVrGHI6N4ACDb0XpZCQ%3D%3D@logbookosl.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@logbookosl@`
+const dbLink='mongodb+srv://tanishkaDb:Ze3wXDNXDvEBsD3q@cluster0.g2jxbm3.mongodb.net/?retryWrites=true&w=majority'
 
 const dbConn=mongoose.connect(dbLink,{
     autoIndex:true,
