@@ -22,7 +22,7 @@ const registerFunc = async (req, res) => {
             res.cookie('oslLogUser',oslLogUser,{
                 httpOnly:true
             })
-            res.redirect('/ss')
+            res.redirect('/')
         })
 
         .catch((err) => res.status(400).send({ err}))

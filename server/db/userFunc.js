@@ -58,11 +58,11 @@ async function scanLog(usn,ip,useragent) {
     console.log(usn,ip,useragent)
     return new Promise((resolve, reject) => {
         users.findOneAndUpdate(
-            {usn:usn},
+            {usn:usn.toLowerCase()},
             {$push:{
                 logsData:[{
-                    useragent,ip
-                }]
+                    usersagent:useragent,ip:ip
+            }]
             }}
         )
         .then((msg)=>{
