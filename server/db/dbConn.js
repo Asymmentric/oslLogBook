@@ -4,7 +4,7 @@ const dbLink='mongodb+srv://tanishkaDb:Ze3wXDNXDvEBsD3q@cluster0.g2jxbm3.mongodb
 
 const dbConn=mongoose.connect(dbLink,{
     autoIndex:true,
-    dbName:'test'
+    dbName:'oslLogBook'
 })
 
 dbConn.then(()=>{

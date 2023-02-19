@@ -6,6 +6,7 @@ const cookieParser=require('cookie-parser')
 
 
 
+
 app.use(cookieParser())
 
 app.use(express.urlencoded())
@@ -13,8 +14,10 @@ app.use(express.json())
 
 
 app.listen(9090,()=>{
-    console.log(path.join(__dirname,'../client'))
+    console.log(__dirname)
     console.log(`Running on 9090`)
 })
+app.use('/login',express.static(path.join(__dirname,'../client')))
+app.use('/register',express.static(path.join(__dirname,'../client')))
 
 module.exports=app 
