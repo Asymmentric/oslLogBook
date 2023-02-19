@@ -15,7 +15,7 @@ route.get('/register',verifyToken,(req,res)=>{
     res.sendFile(path.join(__dirname,'../../client/register.html'))
 })
 route.get('/login',verifyToken,(req,res)=>{
-    res.send({'login here':1})
+    res.sendFile(path.join(__dirname,'../../client/login.html'))
 })
 
 route.get('/oslLog/api/v1/scan/entry',(req,res,next)=>{

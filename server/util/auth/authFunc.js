@@ -30,7 +30,7 @@ const registerFunc = async (req, res) => {
 
 const loginFunc=async (req,res)=>{
     
-    users.loginCheck(req.body.userId,req.body.password)
+    users.loginCheck(req.body.usn,req.body.password)
 
     .then((payLoad)=>generateToken(payLoad))
 
@@ -38,7 +38,9 @@ const loginFunc=async (req,res)=>{
         res.cookie('oslLogAuthUSN',token,{
             httpOnly:true
         })
+        
         res.redirect('/')
+        
     })
 
     .catch(err=>res.send({msg:err}))
@@ -65,7 +67,11 @@ const verifyToken=(req,res,next)=>{
         if(!err) {
             res.redirect('/')
         }
-        else return res.send(err)
+        /*
+        //this sends error as response
+        else return res.send(err)   
+        */
+       else next()
     })
     }else {console.log(23);next()}
     
