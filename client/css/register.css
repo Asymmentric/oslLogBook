@@ -2,7 +2,10 @@
     box-sizing: content-box;
     font-family: Arial, Helvetica, sans-serif;
 }
-
+p{
+    background-color: white;
+    text-align: center;
+}
 .sec1{
     
     width: 300px;
@@ -43,8 +46,9 @@ input{
     margin-top: 10px;
 }
 
-#reg{
+#reg,#login{
     background-color: rgb(9, 92, 9);
     border: 1px solid rgb(1, 41, 1);
     border-radius: 5px;
 }
+
