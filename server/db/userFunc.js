@@ -42,7 +42,7 @@ async function loginCheck(userId,password) {
                 console.log(res)
                 if(res){
                     console.log('pass correct')
-                    resolve({usn:user[0].usn,email:user[0].email})
+                    resolve({usn:user[0].usn,email:user[0].email,name:user[0].name})
                 }
                 else{
                     console.log('Nopes-Wrong Pass');

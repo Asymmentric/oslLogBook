@@ -20,21 +20,27 @@ let decryptPwd=(pwd,hash)=>{
 
 let validateRegistration=(req,res,next)=>{
     console.log(req.body)
-    if(req.body.email && req.body.usn){
-        const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((req.body.email).toLowerCase())
-        const usnOK=(/^4vv|4VV/).test(req.body.usn)
-        if((emailOK && req.body.password) || usnOK && req.body.password) next()
-        else return res.send({msg:'Invalid Email'})
+    let {usn,email}=req.body
 
-    }else if(req.body.email){
-        const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((req.body.email).toLowerCase())
+    if(!email) email=usn
+    if(!usn) usn=email
+    
+
+    if(email && usn){
+        const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((email).toLowerCase())
+        const usnOK=(/^4vv|4VV/).test(usn)
         if((emailOK && req.body.password) || usnOK && req.body.password) next()
-        else return res.send({msg:'Invalid Email'})
-    }
-    else if(req.body.usn){
-        const usnOK=(/^4vv|4VV/).test(req.body.usn)
-        if(usnOK && req.body.password) next()
-        else return res.send({msg:'Invalid USN'})
+        else return res.send({msg:'Invalid Email or USN'})
+
+    // }else if(req.body.email){
+    //     const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((req.body.email).toLowerCase())
+    //     if((emailOK && req.body.password) || usnOK && req.body.password) next()
+    //     else return res.send({msg:'Invalid Email'})
+    // }
+    // else if(req.body.usn){
+    //     const usnOK=(/^4vv|4VV/).test(req.body.usn)
+    //     if(usnOK && req.body.password) next()
+    //     else return res.send({msg:'Invalid USN'})
     }
     else{
         return res.status(200).send({msg:'Missing email'})

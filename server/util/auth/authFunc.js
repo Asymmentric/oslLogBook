@@ -32,8 +32,13 @@ const loginFunc=async (req,res)=>{
     
     users.loginCheck(req.body.usn,req.body.password)
 
-    .then((payLoad)=>generateToken(payLoad))
-
+    .then((payLoad)=>{
+        oslLogUser=JSON.stringify({usn:payLoad.usn,name:payLoad.name})
+            res.cookie('oslLogUser',oslLogUser,{
+                httpOnly:true
+            })
+        return generateToken(payLoad)
+    })
     .then(token=>{
         res.cookie('oslLogAuthUSN',token,{
             httpOnly:true
@@ -65,15 +70,25 @@ const verifyToken=(req,res,next)=>{
     jwt.verify(token,'abc',(err,result)=>{
         console.log('jwt res-> ',result)
         if(!err) {
-            res.redirect('/')
+            if(req.url==='/oslLog/api/v1/scan/entry') next();
+            else res.redirect('/')
         }
         /*
         //this sends error as response
         else return res.send(err)   
         */
-       else next()
+       else {
+        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect('/register')
+        else next()
+       } 
     })
-    }else {console.log(23);next()}
+    }else {
+        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect('/login') 
+        else{
+            console.log(23);
+            next()
+        }
+    }
     
 }
 

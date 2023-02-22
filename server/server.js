@@ -4,7 +4,7 @@ const app=express()
 const path=require('path')
 const cookieParser=require('cookie-parser')
 const dotenv=require('dotenv').config()
-const port=process.env.PORT || 9000
+const port=process.env.PORT || 9090
 
 
 app.use(cookieParser())
