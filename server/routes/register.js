@@ -9,6 +9,7 @@ const path=require('path')
 route.get('/',(req,res)=>{
     console.log(req.headers['user-agent'])
     console.log(req.ip)
+    console.log(req.url)
     res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
 })
 route.get('/register',verifyToken,(req,res)=>{
@@ -18,7 +19,7 @@ route.get('/login',verifyToken,(req,res)=>{
     res.sendFile(path.join(__dirname,'../../client/login.html'))
 })
 
-route.get('/oslLog/api/v1/scan/entry',(req,res,next)=>{
+route.get('/oslLog/api/v1/scan/entry',verifyToken,(req,res)=>{
     if(req.cookies.oslLogUser){
         usn=JSON.parse(req.cookies.oslLogUser).usn
         users.scanLog(usn,req.ip,req.headers['user-agent'])
