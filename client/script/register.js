@@ -1,14 +1,15 @@
 const ip=document.getElementsByTagName('input')
 
-let usn=ip[0].value
-let email=ip[1].value
-let userName=ip[2].value
-let password=ip[3].value
+
 
 ip[4].addEventListener('click',(e)=>{
+    let usn=ip[0].value
+    let email=ip[1].value
+    let userName=ip[2].value
+    let password=ip[3].value
     console.log('sdfsdf')
     fetch('/register',{
-        method:post,
+        method:'post',
         headers:{
             'Content-Type':'application/json'
         },

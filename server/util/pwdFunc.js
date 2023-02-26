@@ -19,7 +19,6 @@ let decryptPwd=(pwd,hash)=>{
 }
 
 let validateRegistration=(req,res,next)=>{
-    console.log(req.body)
     let {usn,email}=req.body
 
     if(!email) email=usn
