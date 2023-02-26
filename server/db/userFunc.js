@@ -28,7 +28,7 @@ async function userExists(usn,email) {
 
     return new Promise((resolve, reject) => {
         if(user.length===0) resolve(true)
-        else reject({msg:'User Exists', id:user[0]._id,email:user[0].email,usn:user[0].usn})
+        else reject({msg:`User Exists with USN ${usn}`, id:user[0]._id,email:user[0].email,usn:user[0].usn})
     })
 }
 

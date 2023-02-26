@@ -1,4 +1,3 @@
-
 const route=require('../server')
 const validateRegistration=require('../util/pwdFunc').validateRegistration
 const users=require('../db/userFunc')
@@ -13,9 +12,14 @@ route.get('/',(req,res)=>{
     res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
 })
 route.get('/register',verifyToken,(req,res)=>{
+    
+    console.log('query@register',req.query)
+    // console.log(req)
     res.sendFile(path.join(__dirname,'../../client/register.html'))
 })
 route.get('/login',verifyToken,(req,res)=>{
+    console.log('query@login',req.query)
+    // console.log(req)
     res.sendFile(path.join(__dirname,'../../client/login.html'))
 })
 
@@ -32,7 +36,7 @@ route.get('/oslLog/api/v1/scan/entry',verifyToken,(req,res)=>{
             res.send({msg:err.msg})
         })
     }
-    else res.redirect('/register')
+    else res.redirect('/register?redirect='+req.url)
 })
 
 route.post('/register',verifyToken,validateRegistration,registerFunc)

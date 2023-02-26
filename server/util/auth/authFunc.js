@@ -1,10 +1,12 @@
 const jwt=require('jsonwebtoken')
 const users = require('../../db/userFunc')
-
+const {getQueryParams}=require('../redirector')
 
 const registerFunc = async (req, res) => {
+    console.log(1234,req.url)
     let payLoad={email:req.body.email,usn:req.body.usn}
     console.log('Payload',payLoad)
+    let queryParams=getQueryParams(req.headers.referer)
     users.userExists(req.body.usn, req.body.email)
         .then(() => users.createUser(req.body.usn, req.body.name, req.body.email, req.body.password))
         .then((val) =>{
@@ -22,14 +24,18 @@ const registerFunc = async (req, res) => {
             res.cookie('oslLogUser',oslLogUser,{
                 httpOnly:true
             })
-            res.redirect('/')
+            if(queryParams.redirect) res.redirect(queryParams.redirect)
+            else res.redirect('/')
+        
         })
 
-        .catch((err) => res.status(400).send({ err}))
+        .catch((err) => res.status(400).send({ msg:err.msg}))
 }
 
 const loginFunc=async (req,res)=>{
-    
+    console.log(1234,'referee at login',req.headers.referer.split('?redirect='))
+    console.log(1234,'login',req.url)
+    let queryParams=getQueryParams(req.headers.referer)
     users.loginCheck(req.body.usn,req.body.password)
 
     .then((payLoad)=>{
@@ -44,8 +50,11 @@ const loginFunc=async (req,res)=>{
             httpOnly:true
         })
         
-        res.redirect('/')
         
+        console.log(queryParams)
+        if(queryParams.redirect) res.redirect(queryParams.redirect)
+        else {console.log('to home');res.redirect('/')}
+        console.log(queryParams)
     })
 
     .catch(err=>res.send({msg:err}))
@@ -63,6 +72,7 @@ const generateToken=async(payload)=>{
 }
 
 const verifyToken=(req,res,next)=>{
+    console.log('989',req.headers.referer)
     
     if(req.cookies.oslLogAuthUSN){
         const token=req.cookies.oslLogAuthUSN
@@ -71,6 +81,7 @@ const verifyToken=(req,res,next)=>{
         console.log('jwt res-> ',result)
         if(!err) {
             if(req.url==='/oslLog/api/v1/scan/entry') next();
+            // else if(queryParams.redirect) res.redirect(queryParams.redirect)
             else res.redirect('/')
         }
         /*
@@ -78,12 +89,12 @@ const verifyToken=(req,res,next)=>{
         else return res.send(err)   
         */
        else {
-        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect('/register')
+        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect(`/register?redirect=${req.url}`)
         else next()
        } 
     })
     }else {
-        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect('/login') 
+        if(req.url==='/oslLog/api/v1/scan/entry') res.redirect(`/login?redirect=${req.url}`) 
         else{
             console.log(23);
             next()
