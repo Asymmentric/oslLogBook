@@ -1,10 +1,11 @@
 const mongoose=require('mongoose')
+const dotenv=require('dotenv').config()
 
-const dbLink='mongodb+srv://tanishkaDb:Ze3wXDNXDvEBsD3q@cluster0.g2jxbm3.mongodb.net/?retryWrites=true&w=majority'
+const dbLink=process.env.DB_LINK
 
 const dbConn=mongoose.connect(dbLink,{
     autoIndex:true,
-    dbName:'oslLogBook'
+    dbName:process.env.DB_NAME
 })
 
 dbConn.then(()=>{
@@ -17,7 +18,3 @@ dbConn.catch((err)=>{
 
 // module.exports=mongoClient
 module.exports=dbConn
-//mongo 1pwd=jr84Dsfsd93kg48sJ
-//mongo user=osladmin 
-
-// Correlation ID : a112ae99-db03-45a9-b7d4-8074067b6ae9 Azure
