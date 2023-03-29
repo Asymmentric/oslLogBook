@@ -29,7 +29,8 @@ route.get('/oslLog/api/v1/scan/entry',verifyToken,(req,res)=>{
         users.scanLog(usn,req.ip,req.headers['user-agent'])
         .then((msg)=>{
             console.log(msg);
-            res.send({Code:msg.code,msg:msg.msg})
+            // res.send({Code:msg.code,msg:msg.msg})
+            res.send(`<center><h1>${msg.msg}</h1></center>`)
         })
         .catch((err)=>{
             console.log(err)
