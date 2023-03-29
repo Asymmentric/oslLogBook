@@ -50,7 +50,9 @@ async function loginCheck(userId,password) {
                 }
             })
         }
-        else reject('User not registered. Please Register')
+        else {
+            console.log(user)
+            reject('User not registered. Please Register')}
     })
 }
 

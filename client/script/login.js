@@ -1,36 +1,34 @@
 const ip = document.getElementsByTagName('input')
-const errs = document.getElementById('err-msg')
+const errs=document.getElementById('err-msg')
 
 
-ip[4].addEventListener('click', (e) => {
+ip[2].addEventListener('click', (e) => {
     e.preventDefault()
-    let usn = ip[0].value
-    let email = ip[1].value
-    let name = ip[2].value
-    let password = ip[3].value
-    if (name != '' && password != '' && usn != '' && email != '') {
-        fetch('/register', {
+    let userId = ip[0].value
+    let password = ip[1].value
+    if(userId!='' && password!=''){
+        fetch('/login', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                usn, email, name, password
+                userId,password
             })
-            })
+        })
             .then(response => response.json())
-            .then(data => {
+            .then(data=>{
                 console.log(data)
-                if (data.err === true) {
+                if (data.err === true ) {
                     errs.innerText = data.msg
                 }
                 else {
                     location.reload()
                 }
-
             })
     }
-    else {
-        errs.innerText = 'All fields are mandatory'
+    else{
+        errs.innerText='All fields are mandatory'
     }
+    
 })
