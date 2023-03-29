@@ -26,20 +26,10 @@ let validateRegistration=(req,res,next)=>{
     
 
     if(email && usn){
-        const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((email).toLowerCase())
-        const usnOK=(/^4vv|4VV/).test(usn)
+        const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((email).toLowerCase())
+        const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(usn)
         if((emailOK && req.body.password) || usnOK && req.body.password) next()
         else return res.send({msg:'Invalid Email or USN'})
-
-    // }else if(req.body.email){
-    //     const emailOK=(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)vvce\.ac\.in$/).test((req.body.email).toLowerCase())
-    //     if((emailOK && req.body.password) || usnOK && req.body.password) next()
-    //     else return res.send({msg:'Invalid Email'})
-    // }
-    // else if(req.body.usn){
-    //     const usnOK=(/^4vv|4VV/).test(req.body.usn)
-    //     if(usnOK && req.body.password) next()
-    //     else return res.send({msg:'Invalid USN'})
     }
     else{
         return res.status(200).send({msg:'Missing email'})

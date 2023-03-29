@@ -17,7 +17,7 @@ app.listen(port,()=>{
     console.log(__dirname)
     console.log(`Running on ${port}...`)
 })
-app.use('/login',express.static(path.join(__dirname,'../client')))
-app.use('/register',express.static(path.join(__dirname,'../client')))
+app.use('/client',express.static(path.join(__dirname,'../client')))
+// app.use('/register',express.static(path.join(__dirname,'../client')))
 
 module.exports=app 
