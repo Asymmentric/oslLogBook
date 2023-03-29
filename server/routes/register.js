@@ -9,7 +9,7 @@ route.get('/',(req,res)=>{
     console.log(req.headers['user-agent'])
     console.log(req.ip)
     console.log(req.url)
-    res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
+    // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
     res.send(`<center><h1>Scan the QR Code to log your entry</h1></center>`)
 })
 route.get('/register',verifyToken,(req,res)=>{
