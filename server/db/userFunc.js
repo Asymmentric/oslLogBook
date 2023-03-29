@@ -54,14 +54,14 @@ async function loginCheck(userId,password) {
     })
 }
 
-async function scanLog(usn,ip,useragent) {
+async function scanLog(usn,ip,useragent,userDateTime) {
     console.log(usn,ip,useragent)
     return new Promise((resolve, reject) => {
         users.findOneAndUpdate(
             {usn:usn.toLowerCase()},
             {$push:{
                 logsData:[{
-                    usersagent:useragent,ip:ip
+                    usersagent:useragent,ip:ip,time:userDateTime
             }]
             }}
         )

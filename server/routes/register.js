@@ -27,7 +27,14 @@ route.get('/login',verifyToken,(req,res)=>{
 route.get('/oslLog/api/v1/scan/entry',verifyToken,(req,res)=>{
     if(req.cookies.oslLogUser){
         usn=JSON.parse(req.cookies.oslLogUser).usn
-        users.scanLog(usn,req.ip,req.headers['user-agent'])
+
+        let dateUTC=new Date()
+        const istOffset=330;
+        const userDateTime=new Date(dateUTC.getTime() + (istOffset*60*1000))
+        
+        console.log(userDateTime)
+
+        users.scanLog(usn,req.ip,req.headers['user-agent'],userDateTime)
         .then((msg)=>{
             console.log(msg);
             // res.send({Code:msg.code,msg:msg.msg})
