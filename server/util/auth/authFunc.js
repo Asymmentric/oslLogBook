@@ -62,7 +62,7 @@ const loginFunc=async (req,res)=>{
 
 const generateToken=async(payload)=>{
     return new Promise((resolve, reject) => {
-        let token=jwt.sign(payload,'abc',{
+        let token=jwt.sign(payload,process.env.JWT_SECRET_TOKEN,{
             algorithm:'HS384',
             expiresIn:'7d'
         })
@@ -77,7 +77,7 @@ const verifyToken=(req,res,next)=>{
     if(req.cookies.oslLogAuthUSN){
         const token=req.cookies.oslLogAuthUSN
     if(!token) return res.send({msg:'Authentication token missisng'})
-    jwt.verify(token,'abc',(err,result)=>{
+    jwt.verify(token,process.env.JWT_SECRET_TOKEN,(err,result)=>{
         console.log('jwt res-> ',result)
         if(!err) {
             if(req.url==='/oslLog/api/v1/scan/entry') next();
