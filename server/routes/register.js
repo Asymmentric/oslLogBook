@@ -26,7 +26,7 @@ exports.scanLogFunc=(req,res)=>{
         .then((msg)=>{
             console.log(msg);
             // res.send({Code:msg.code,msg:msg.msg})
-            res.send(`<center><h1>${msg.msg}</h1></center>`)
+            res.redirect('/livepage')
         })
         .catch((err)=>{
             console.log(err)
