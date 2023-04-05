@@ -1,16 +1,22 @@
-function Time() {
-    var log = new Date()
+const timeBlock=document.getElementById('lastLoginTime')
+const dateBlock=document.getElementById('lastLoginDate')
+async function time(){
+    fetch('/livepage',{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        }
+        })
+        .then(response=>response.json())
+        .then(time=>{
+            let timeNow=new Date()
+            let lastLog=new Date(time.lastLogin)
+            dateBlock.innerText='\n\n Last Logged at \n\n'+lastLog+'\n\n'
+        })
 
-
-    // Adding time elements to the div
-    document.getElementById("digital-clock").innerText = "Last logged at: \n"+log.toLocaleString();
-
-    // Set Timer to 1 sec (1000 ms)
-    // setTimeout(Time, 1000);
-
-
+    
 }
 
+time()
 
 
-Time();

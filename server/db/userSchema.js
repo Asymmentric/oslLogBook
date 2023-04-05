@@ -1,29 +1,33 @@
-const mongoose=require('mongoose')
-const {logSchema}=require('./logDataSchema')
+const mongoose = require('mongoose')
+const { logSchema } = require('./logDataSchema')
 
-const userSchema=new mongoose.Schema({
-    usn:String,
-    name:String,
-    email:String,
-    password:String,
-    role:{
-        type:String,
-        default:'Member'
+const userSchema = new mongoose.Schema({
+    usn: String,
+    name: String,
+    email: String,
+    password: String,
+    role: {
+        type: String,
+        default: 'Member'
     },
-    status:{
-        type:String,
-        default:'active' 
+    status: {
+        type: String,
+        default: 'active'
     },
-    validated:{
-        type:Boolean,
-        default:false
+    validated: {
+        type: Boolean,
+        default: false
     },
-    logsData:[logSchema]
+    lastLogin: {
+        type: Date,
+        default: Date.now()
+    },
+    logsData: [logSchema]
 
 })
 
-const users=mongoose.model('users',userSchema,'users')
+const users = mongoose.model('users', userSchema, 'users')
 
-module.exports={
+module.exports = {
     users
 }
