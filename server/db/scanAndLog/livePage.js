@@ -2,7 +2,7 @@ const {users}=require('../userSchema')
 
 exports.getLastLogin=async (userId)=>{
     return new Promise((resolve, reject) => {
-        users.findOne({ $or: [{ email: userId }, { usn: userId }] },{lastLogin:1})
+        users.findOne({ $or: [{ email: userId }, { usn: userId }] },{lastLogin:1,usn:1,name:1})
         .then(userData=>{
             
             resolve(userData)
