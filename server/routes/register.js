@@ -1,53 +1,59 @@
-
-const route=require('../server')
 const validateRegistration=require('../util/pwdFunc').validateRegistration
-const users=require('../db/userFunc')
+const users=require('../db/userFunc/userFunc')
+const scan=require('../db/scanAndLog/qrScan')
 const {registerFunc,generateToken,loginFunc,verifyToken}=require('../util/auth/authFunc')
 const path=require('path')
+const { getLastLogin } = require('../db/scanAndLog/livePage')
 
 
-route.get('/',(req,res)=>{
+exports.homeFunc=(req,res)=>{
+
     console.log(req.headers['user-agent'])
     console.log(req.ip)
+    console.log(req.url)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
-    res.sendFile(path.join(__dirname,'../../client/index.html'))
-})
+    res.send(`<center>
+    <h1>Scan the QR Code to log your entry</h1>
+    <img src='/client/QRCode.png'>
+    </center>`)
+}
 
-
-route.get('/register',verifyToken,(req,res)=>{
-    res.sendFile(path.join(__dirname,'../../client/register.html'))
-})
-
-
-route.get('/login',verifyToken,(req,res)=>{
-    // res.send({'login here':1})
-    res.sendFile(path.join(__dirname,'../../client/login.html'))
-})
-
-
-route.get('/oslLog/api/v1/scan/entry',(req,res,next)=>{
+exports.scanLogFunc=(req,res)=>{
     if(req.cookies.oslLogUser){
         usn=JSON.parse(req.cookies.oslLogUser).usn
-        users.scanLog(usn,req.ip,req.headers['user-agent'])
+        
+        const userDateTime=new Date()
+        let dayStart=new Date(userDateTime.getFullYear(),userDateTime.getMonth(),userDateTime.getDate())
+        
+        console.log(userDateTime)
+        getLastLogin(usn)
+        .then(lastLoginDetails=>{
+            if(lastLoginDetails.lastLogin<dayStart) return scan.scanLog(usn,req.ip,req.headers['user-agent'],userDateTime)
+            else return {lastLogin:lastLoginDetails.lastLogin}
+        })
         .then((msg)=>{
             console.log(msg);
-            // res.send({err:false,Code:msg.code,msg:msg.msg})
-            res.sendFile(path.join(__dirname,'../../client/livepage.html'))
+            // res.send({Code:msg.code,msg:msg.msg})
+            res.redirect('/livepage')
         })
         .catch((err)=>{
             console.log(err)
             res.send({err:true,msg:err.msg})
         })
     }
-    else res.redirect('/register')
-})
+    else res.redirect('/register?redirect='+req.url)
+}
 
-route.get('/livepage',(req,res)=>{
-    res.sendFile(path.join(__dirname,'../../client/livepage.html'))
-})
-route.post('/register',verifyToken,validateRegistration,registerFunc)
+exports.renderRegister=(req,res)=>{
+    console.log('query@register',req.query)
+    // console.log(req)
+    res.sendFile(path.join(__dirname,'../../client/register.html'))
+}
 
-route.post('/login',validateRegistration,verifyToken,loginFunc)
+exports.renderLogin=(req,res)=>{
+    console.log('query@login',req.query)
+    // console.log(req)
+    res.sendFile(path.join(__dirname,'../../client/login.html'))
+}
 
 
-module.exports=route
