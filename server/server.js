@@ -3,6 +3,7 @@ const app=express()
 const path=require('path')
 const cookieParser=require('cookie-parser')
 const dotenv=require('dotenv').config()
+const session=require('express-session')
 
 const routes=require('./routes/route')
 const handler=require('./util/handler/notFound')
@@ -18,6 +19,16 @@ app.use(express.urlencoded())
 app.use(express.json())
 
 app.set('case sensitive routing ', true)
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+    secret:process.env.SESSION_SECRET,
+    saveUninitialized:true,
+    resave:false,
+    cookie:{
+        maxAge:oneDay
+    }
+}))
 
 routes(app)
 
