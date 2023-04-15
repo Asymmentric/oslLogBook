@@ -10,7 +10,11 @@ exports.livePageFunc=(req,res)=>{
     livePage.getLastLogin(userid)
     .then(lastLoginDateAndTime=>{
         console.log(lastLoginDateAndTime)
-        res.send({err:false,lastLogin:lastLoginDateAndTime.lastLogin})
+        res.send({
+            err:false,
+            nameOfUser:lastLoginDateAndTime.name,
+            lastLogin:lastLoginDateAndTime.lastLogin
+        })
     })
     .catch(err=>{
         console.log(err.msg)
