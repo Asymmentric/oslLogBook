@@ -3,6 +3,7 @@ const users=require('../db/userFunc/userFunc')
 const scan=require('../db/scanAndLog/qrScan')
 const {registerFunc,generateToken,loginFunc,verifyToken}=require('../util/auth/authFunc')
 const path=require('path')
+const { getLastLogin } = require('../db/scanAndLog/livePage')
 
 
 exports.homeFunc=(req,res)=>{
@@ -11,7 +12,10 @@ exports.homeFunc=(req,res)=>{
     console.log(req.ip)
     console.log(req.url)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
-    res.send(`<center><h1>Scan the QR Code to log your entry</h1></center>`)
+    res.send(`<center>
+    <h1>Scan the QR Code to log your entry</h1>
+    <img src='/client/QRCode.png'>
+    </center>`)
 }
 
 exports.scanLogFunc=(req,res)=>{
@@ -19,10 +23,14 @@ exports.scanLogFunc=(req,res)=>{
         usn=JSON.parse(req.cookies.oslLogUser).usn
         
         const userDateTime=new Date()
+        let dayStart=new Date(userDateTime.getFullYear(),userDateTime.getMonth(),userDateTime.getDate())
         
         console.log(userDateTime)
-
-        scan.scanLog(usn,req.ip,req.headers['user-agent'],userDateTime)
+        getLastLogin(usn)
+        .then(lastLoginDetails=>{
+            if(lastLoginDetails.lastLogin<dayStart) return scan.scanLog(usn,req.ip,req.headers['user-agent'],userDateTime)
+            else return {lastLogin:lastLoginDetails.lastLogin}
+        })
         .then((msg)=>{
             console.log(msg);
             // res.send({Code:msg.code,msg:msg.msg})

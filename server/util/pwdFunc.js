@@ -29,17 +29,31 @@ let validateRegistration=(req,res,next)=>{
         const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((email).toLowerCase())
         const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(usn)
         if((emailOK && req.body.password) || usnOK && req.body.password) next()
-        else return res.send({msg:'Invalid Email or USN'})
+        else return res.send({err:true,msg:'Invalid Email or USN'})
     }
     else{
-        return res.status(200).send({msg:'Missing email'})
+        return res.status(200).send({err:true,msg:'Missing email'})
     }
     
+}
+
+let validateLogin=(req,res,next)=>{
+    let {userId}=req.body
+    if(userId){
+        const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((userId).toLowerCase())
+        const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(userId)
+        if((emailOK && req.body.password) || (usnOK && req.body.password)) next()
+        else return res.send({err:true,msg:'Invalid Email or USN'})
+    }
+    else{
+        return res.send({err:true,msg:'Missing Email or USN'})
+    }
 }
 
 
 module.exports={
     encryptPwd,
     decryptPwd,
-    validateRegistration
+    validateRegistration,
+    validateLogin
 }
