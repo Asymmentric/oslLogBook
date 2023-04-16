@@ -56,7 +56,6 @@ input{
     border: 1px solid rgb(1, 41, 1);
     border-radius: 5px;
 }
-<<<<<<< HEAD:client/style/register.css
 p{
     text-align: center;
 }
@@ -66,12 +65,3 @@ a{
     text-decoration: none;
     color: white;
 }
-=======
-
-#err-box{
-    color: red;
-    background-color: rgb(228, 90, 90,0.2);
-    
-    font-size: 21px;
-}
->>>>>>> 3ca4dc4e4b4fb66a5a2c51700beb0b6752b2428f:client/css/register.css
