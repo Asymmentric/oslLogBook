@@ -28,17 +28,6 @@ const registerFunc = async (req, res) => {
             res.cookie('oslLogUser', oslLogUser, {
                 httpOnly: true
             })
-<<<<<<< HEAD
-            console.log('sdfsdfsdfsdfsdfsdfsd')
-            res.status(200).send({err:false,msg:'OK'})
-        })
-
-        .catch((err) => res.status(400).send({err:true,msg: err}))
-}
-
-const loginFunc=async (req,res)=>{
-    users.loginCheck(req.body.userId,req.body.password)
-=======
             console.log(`\n it passed till her \n ${queryParams}`)
 
             if (queryParams) res.status(200).send({ err: false, redirect: queryParams.redirect })
@@ -58,7 +47,6 @@ const loginFunc = async (req, res) => {
     console.log(1234, 'login', req.url)
 
     let queryParams = req.headers.referer? getQueryParams(req.headers.referer) :''
->>>>>>> 3ca4dc4e4b4fb66a5a2c51700beb0b6752b2428f
 
     users.loginCheck(req.body.userId, req.body.password)
 
@@ -83,57 +71,21 @@ const loginFunc = async (req, res) => {
 
             console.log(queryParams)
         })
-<<<<<<< HEAD
-        oslLogUser=JSON.stringify({usn:req.body.userId})
-            res.cookie('oslLogUser',oslLogUser,{
-                httpOnly:true
-            })
-        res.send({err:false,msg:"Login success"})
-    })
-
-    .catch(err=>res.send({err:true,msg:err}))
-=======
 
         .catch(err => res.send({ err:true,msg: err }))
->>>>>>> 3ca4dc4e4b4fb66a5a2c51700beb0b6752b2428f
 }
 
 const generateToken = async (payload) => {
     return new Promise((resolve, reject) => {
-<<<<<<< HEAD
-        let token=jwt.sign(payload,process.env.JWT_SECRET,{
-            algorithm:'HS384',
-            expiresIn:'7d'
-=======
         let token = jwt.sign(payload, process.env.JWT_SECRET_TOKEN, {
             algorithm: 'HS384',
             expiresIn: '7d'
->>>>>>> 3ca4dc4e4b4fb66a5a2c51700beb0b6752b2428f
         })
 
         if (token) resolve(token)
     })
 }
 
-<<<<<<< HEAD
-const verifyToken=(req,res,next)=>{
-    
-    if(req.cookies.oslLogAuthUSN){
-        const token=req.cookies.oslLogAuthUSN
-    if(!token) return res.send({err:true,msg:'Authentication token missisng'})
-
-    jwt.verify(token,process.env.JWT_SECRET,(err,result)=>{
-        console.log('jwt res-> ',result)
-        if(!err) {
-            res.redirect('/oslLog/api/v1/scan/entry')
-        }
-        else {return next()}
-    })
-
-    }else {console.log(23);
-        return next()}
-    
-=======
 const verifyToken = (req, res, next) => {
     console.log('989', req.headers.referer)
 
@@ -164,7 +116,6 @@ const verifyToken = (req, res, next) => {
         }
     }
 
->>>>>>> 3ca4dc4e4b4fb66a5a2c51700beb0b6752b2428f
 }
 
 
