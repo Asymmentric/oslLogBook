@@ -22,5 +22,8 @@ module.exports = (app) => {
     app.post('/auth/route/type/otp/send',verifyToken,validation.validateRegistration,routeSendOTP)
     app.post('/auth/route/type/otp/verify',verifyToken,routeVerifyOTP)
 
+    app.get('/admin/register')
+    app.post('/admin/register')
+
     
 }

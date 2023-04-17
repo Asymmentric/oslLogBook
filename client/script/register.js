@@ -95,5 +95,3 @@ ip[4].addEventListener('click', (e) => {
 
 })
 
-
-

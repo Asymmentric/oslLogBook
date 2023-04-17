@@ -18,7 +18,7 @@
                         <span>USN</span>
                     </div> -->
                     <div class="right">
-                        <input type="text" name="usn" placeholder='USN' id="usn">
+                        <input type="text" name="usn" placeholder='USN' id="usn" required="true">
                     </div>
                 </div>
                 <div class="box">
@@ -26,7 +26,7 @@
                         <span>Email</span>
                     </div> -->
                     <div class="right">
-                        <input type="text" name="email" Placeholder='EMAIL' id="email">
+                        <input type="text" name="email" Placeholder='EMAIL' id="email" required="true">
                     </div>
                 </div>
                 <div class="box">
@@ -34,7 +34,7 @@
                         <span>Name</span>
                     </div> -->
                     <div class="right">
-                        <input type="text" name="name" placeholder='NAME' id="name">
+                        <input type="text" name="name" placeholder='NAME' id="name" required="true">
                     </div>
                 </div>
                 <div class="box">
@@ -42,7 +42,7 @@
                         <span>Password</span>
                     </div> -->
                     <div class="right">
-                        <input type="password" name="password" placeholder="PASSWORD" id="pwd">
+                        <input type="password" name="password" placeholder="PASSWORD" id="pwd" required="true">
                     </div>
                 </div>
                 <div class="box">
@@ -54,27 +54,7 @@
         <!-- </form> -->
         <p>Already registered? <a href="/login?redirect=/oslLog/api/v1/scan/entry">Login</a></p>
     </section>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/client/script/register.js"></script>
-    <!-- <script >
-        const ip=document.getElementsByTagName('input')
-
-
-// console.log(password)
-
-ip[4].addEventListener('submit',(e)=>{
-    let usn=ip[0].value
-let email=ip[1].value
-let userName=ip[2].value
-let password=ip[3].value
-    let xhr=new XMLHttpRequest()
-    xhr.open('post','/register',true)
-    xhr.setRequestHeader('Content-Type','application/json')
-    xhr.send(JSON.stringify({usn,name:userName,email:email,password}))
-    xhr.onload=()=>{
-        console.log(xhr.response)
-    }
-})
-    </script> -->
+    
 </body>
 </html>
