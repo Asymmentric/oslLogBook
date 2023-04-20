@@ -21,14 +21,14 @@ let decryptPwd=(pwd,hash)=>{
 let validateRegistration=(req,res,next)=>{
     let {usn,email,name,password}=req.body
     
-    if(email && usn){
+    if(email && usn && name){
         const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((email).toLowerCase())
         const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(usn)
         if((emailOK && password) && (usnOK && password)) next()
         else return res.send({err:true,msg:'Invalid Email or USN'})
     }
     else{
-        return res.status(200).send({err:true,msg:'Missing email or USN'})
+        return res.status(200).send({err:true,msg:'Insufficient Data'})
     }
     
 }
