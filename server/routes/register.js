@@ -38,7 +38,7 @@ exports.scanLogFunc=(req,res)=>{
         })
         .catch((err)=>{
             console.log(err)
-            res.send({msg:err.msg})
+            res.send({err:true,msg:err.msg})
         })
     }
     else res.redirect('/register?redirect='+req.url)

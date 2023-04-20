@@ -1,8 +1,9 @@
 const ip=document.getElementsByTagName('input')
+const btn=document.getElementsByTagName('button')
 let errBox=document.getElementById('err-box')
 
 
-ip[2].addEventListener('click',(e)=>{
+btn[0].addEventListener('click',(e)=>{
     e.preventDefault();
     let userId=ip[0].value
 let password=ip[1].value

@@ -1,3 +1,5 @@
+const path=require('path')
+
 exports.notFound=(req,res)=>{
-    res.status(404).send(`<center><h1>Not Found</h1></center>`)
+    res.status(404).sendFile(path.join(__dirname,'../../../client/404.html'))
 }

@@ -1,9 +1,9 @@
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
-    service:process.env.ACCOUNT_EMAIL_SERVICE,
     host: process.env.ACCOUNT_EMAIL_HOST,
     port: process.env.ACCOUNT_EMAIL_PORT,
+    service: process.env.ACCOUNT_EMAIL_SERVICE,
     auth: {
         user: process.env.ACCOUNT_USER,
         pass: process.env.ACCOUNT_PASSWORD
@@ -20,7 +20,7 @@ exports.generateOTP=()=>{
 exports.sendOTP = (email, name,otp) => {
     return new Promise((resolve, reject) => {
         transporter.sendMail({
-             from: 'jordane66@ethereal.email',
+             from: process.env.ACCOUNT_USER,
              to:email,
              subject:'OTP for email confirmation',
              html:`
