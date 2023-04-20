@@ -20,7 +20,7 @@ exports.generateOTP=()=>{
 exports.sendOTP = (email, name,otp) => {
     return new Promise((resolve, reject) => {
         transporter.sendMail({
-             from: 'jordane66@ethereal.email',
+             from: process.env.ACCOUNT_USER,
              to:email,
              subject:'OTP for email confirmation',
              html:`
