@@ -13,6 +13,7 @@ exports.homeFunc=(req,res)=>{
     console.log(req.url)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
     res.send(`<center>
+    <h1>Registrations before 20 Apr 2023 are not valid. Please Register again.</h1>
     <h1>Scan the QR Code to log your entry</h1>
     <img src='/client/QRCode.png'>
     </center>`)
