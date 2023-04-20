@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/client/css/register.css">
-    
+
 </head>
+
 <body>
     <section class="sec1">
         <!-- <form  method="post"> -->
-            <div class="container">
-                <p id="err-box"></p>
-                <div class="box">
-                    <div class="right">
-                        <input type="text" name="usn" placeholder='USN' id="usn">
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="right">
-                        <input type="text" name="email" Placeholder='EMAIL' id="email">
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="right">
-                        <input type="text" name="name" placeholder='NAME' id="name">
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="right">
-                        <input type="password" name="password" placeholder="PASSWORD" id="pwd">
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="regBtn">
-                        <input type="submit" value="Register" id="reg">
-                    </div>
-                </div>
+        <div class="container">
+            <p id="err-box"></p>
+            <div class="box">
                 <div class="right">
-                        <p>Already registered? <a href="/login">Login</a></p>
+                    <input type="text" name="usn" placeholder='USN' id="usn">
                 </div>
-                
             </div>
+            <div class="box">
+                <div class="right">
+                    <input type="text" name="email" Placeholder='EMAIL' id="email">
+                </div>
+            </div>
+            <div class="box">
+                <div class="right">
+                    <input type="text" name="name" placeholder='NAME' id="name">
+                </div>
+            </div>
+            <div class="box">
+                <div class="right">
+                    <input type="password" name="password" placeholder="PASSWORD" id="pwd">
+                </div>
+            </div>
+            <div class="box">
+                <div class="regBtn">
+                    <input type="submit" value="Register" id="reg">
+                </div>
+            </div>
+            <div class="right">
+
+                <p>Already registered? <a href="/login?redirect=/oslLog/api/v1/scan/entry">Login</a></p>
+            </div>
+
+        </div>
         <!-- </form> -->
-        <p>Already registered? <a href="/login?redirect=/oslLog/api/v1/scan/entry">Login</a></p>
     </section>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script src="/client/script/register.js"></script>
     <!-- <script >
         const ip=document.getElementsByTagName('input')
@@ -69,4 +71,5 @@ let password=ip[3].value
 })
     </script> -->
 </body>
+
 </html>
