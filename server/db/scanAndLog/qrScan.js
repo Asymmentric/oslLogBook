@@ -3,13 +3,13 @@ const { users } = require('../userSchema')
 exports.scanLog = async function scanLog(usn, ip, useragent, userDateTime) {
     console.log(usn, ip, useragent, userDateTime)
 
-    let dayStart=new Date(userDateTime.getFullYear(),userDateTime.getMonth(),userDateTime.getDate())
-    
+    let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
+
     return new Promise((resolve, reject) => {
         users.findOneAndUpdate(
             {
                 usn: usn.toLowerCase(),
-                lastLogin:{$lte:dayStart}
+                lastLogin: { $lte: dayStart }
             },
             {
                 lastLogin: userDateTime,

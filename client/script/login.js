@@ -5,6 +5,8 @@ let errBox=document.getElementById('err-box')
 
 btn[0].addEventListener('click',(e)=>{
     e.preventDefault();
+    errBox.innerText=""
+    errBox.style.padding=0;
     let userId=ip[0].value
 let password=ip[1].value
     fetch('/login',{
@@ -20,7 +22,10 @@ let password=ip[1].value
     .then(response=>response.json())
     .then(data=>{
         console.log(data)
-        if (data.err) errBox.innerText = data.msg
+        if (data.err) {
+            errBox.style.padding="10px"
+            errBox.innerText = data.msg
+        }
         if (!data.err) window.location.href = data.redirect
     })
     .catch(err => {
