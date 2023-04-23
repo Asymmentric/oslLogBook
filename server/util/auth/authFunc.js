@@ -9,7 +9,7 @@ const registerFunc = async (req, res) => {
 
     console.log('Payload', payLoad)
 
-    let queryParams = req.headers.referer? getQueryParams(req.headers.referer) :''
+    let queryParams = req.headers.referer ? getQueryParams(req.headers.referer) : ''
 
     users.userExists(req.body.usn, req.body.email)
         .then(() => users.createUser(req.body.usn, req.body.name, req.body.email, req.body.password))
@@ -31,14 +31,14 @@ const registerFunc = async (req, res) => {
             console.log(`\n it passed till her \n ${queryParams}`)
 
             if (queryParams) res.status(200).send({ err: false, redirect: queryParams.redirect })
-            
+
             else res.status(200).send({ err: false, redirect: `/` })
 
 
 
         })
 
-        .catch((err) => res.status(200).send({ err:true,msg: err.msg }))
+        .catch((err) => res.status(200).send({ err: true, msg: err.msg }))
 }
 
 const loginFunc = async (req, res) => {
@@ -46,7 +46,7 @@ const loginFunc = async (req, res) => {
 
     console.log(1234, 'login', req.url)
 
-    let queryParams = req.headers.referer? getQueryParams(req.headers.referer) :''
+    let queryParams = req.headers.referer ? getQueryParams(req.headers.referer) : ''
 
     users.loginCheck(req.body.userId, req.body.password)
 
@@ -66,13 +66,13 @@ const loginFunc = async (req, res) => {
             console.log(queryParams)
 
             if (queryParams) res.status(200).send({ err: false, redirect: queryParams.redirect })
-            
+
             else res.status(200).send({ err: false, redirect: `/` })
 
             console.log(queryParams)
         })
 
-        .catch(err => res.send({ err:true,msg: err }))
+        .catch(err => res.send({ err: true, msg: err }))
 }
 
 const generateToken = async (payload) => {
@@ -88,28 +88,27 @@ const generateToken = async (payload) => {
 
 const verifyToken = (req, res, next) => {
     console.log('989', req.headers.referer)
-
+    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/osllog/api/v1/scan/entry2', '/osllog/api/v1/scan/entry3', '/livepage']
     if (req.cookies.oslLogAuthUSN) {
         const token = req.cookies.oslLogAuthUSN
         if (!token) return res.send({ msg: 'Authentication token missisng' })
         jwt.verify(token, process.env.JWT_SECRET_TOKEN, (err, result) => {
             console.log('jwt res-> ', result)
             if (!err) {
-                if ((req.url === '/oslLog/api/v1/scan/entry') || (req.url === '/livepage')) next();
-                // else if(queryParams.redirect) res.redirect(queryParams.redirect)
+                console.log(req.url)
+
+                if (afterAuthUrls.includes(req.url.toLowerCase())) next()
+
                 else res.redirect('/')
             }
-            /*
-            //this sends error as response
-            else return res.send(err)   
-            */
+
             else {
-                if ((req.url === '/oslLog/api/v1/scan/entry') || (req.url === '/livepage')) res.redirect(`/register?redirect=${req.url}`)
+                if (afterAuthUrls.includes(req.url.toLowerCase())) res.redirect(`/register?redirect=${req.url}`)
                 else next()
             }
         })
     } else {
-        if ((req.url === '/oslLog/api/v1/scan/entry') || (req.url === '/livepage')) res.redirect(`/login?redirect=${req.url}`)
+        if (afterAuthUrls.includes(req.url.toLowerCase())) res.redirect(`/login?redirect=${req.url}`)
         else {
             console.log(23);
             next()

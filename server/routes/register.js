@@ -1,12 +1,13 @@
-const validateRegistration=require('../util/pwdFunc').validateRegistration
-const users=require('../db/userFunc/userFunc')
-const scan=require('../db/scanAndLog/qrScan')
-const {registerFunc,generateToken,loginFunc,verifyToken}=require('../util/auth/authFunc')
-const path=require('path')
+const validateRegistration = require('../util/pwdFunc').validateRegistration
+const users = require('../db/userFunc/userFunc')
+const scan = require('../db/scanAndLog/qrScan')
+const { registerFunc, generateToken, loginFunc, verifyToken } = require('../util/auth/authFunc')
+const path = require('path')
 const { getLastLogin } = require('../db/scanAndLog/livePage')
+const { locationVerification } = require('./geoLocation')
 
 
-exports.homeFunc=(req,res)=>{
+exports.homeFunc = (req, res) => {
 
     console.log(req.headers['user-agent'])
     console.log(req.ip)
@@ -19,42 +20,55 @@ exports.homeFunc=(req,res)=>{
     </center>`)
 }
 
-exports.scanLogFunc=(req,res)=>{
-    if(req.cookies.oslLogUser){
-        usn=JSON.parse(req.cookies.oslLogUser).usn
-        
-        const userDateTime=new Date()
-        let dayStart=new Date(userDateTime.getFullYear(),userDateTime.getMonth(),userDateTime.getDate())
-        
-        console.log(userDateTime)
-        getLastLogin(usn)
-        .then(lastLoginDetails=>{
-            if(lastLoginDetails.lastLogin<dayStart) return scan.scanLog(usn,req.ip,req.headers['user-agent'],userDateTime)
-            else return {lastLogin:lastLoginDetails.lastLogin}
+exports.scanLogFunc = (req, res) => {
+    const { latitude, longitude, geoLocTime } = req.body;
+    const userDateTime = new Date()
+    let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
+    locationVerification(latitude, longitude)
+        .then(msg => {
+            if (req.cookies.oslLogUser) {
+                usn = JSON.parse(req.cookies.oslLogUser).usn
+                console.log(userDateTime)
+                return getLastLogin(usn)
+            }
+            else res.send({err:false,redirect:`/register?redirect=${req.url}`})
         })
-        .then((msg)=>{
+        .then(lastLoginDetails => {
+
+            if (lastLoginDetails.newUser) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, true)
+
+            else if (lastLoginDetails.userData.lastLogin < dayStart) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, false)
+            else return { lastLogin: lastLoginDetails.userData.lastLogin }
+        })
+        .then((msg) => {
             console.log(msg);
             // res.send({Code:msg.code,msg:msg.msg})
-            res.redirect('/livepage')
+            res.send({err:false,redirect:`/livepage`})
         })
-        .catch((err)=>{
+        .catch((err) => {
             console.log(err)
-            res.send({err:true,msg:err.msg})
+            res.send({err:true,write:`<center>
+            <h3>
+                If you're seeing this...
+            </h3>
+            <h5>
+                It seeems you tried scanning the QR code from outside OSL.
+            </h5>
+        </center>`})
         })
-    }
-    else res.redirect('/register?redirect='+req.url)
+
 }
 
-exports.renderRegister=(req,res)=>{
-    console.log('query@register',req.query)
+exports.renderRegister = (req, res) => {
+    console.log('query@register', req.query)
     // console.log(req)
-    res.sendFile(path.join(__dirname,'../../client/register.html'))
+    res.sendFile(path.join(__dirname, '../../client/register.html'))
 }
 
-exports.renderLogin=(req,res)=>{
-    console.log('query@login',req.query)
+exports.renderLogin = (req, res) => {
+    console.log('query@login', req.query)
     // console.log(req)
-    res.sendFile(path.join(__dirname,'../../client/login.html'))
+    res.sendFile(path.join(__dirname, '../../client/login.html'))
 }
 
 
