@@ -8,12 +8,12 @@ exports.livePageFunc=(req,res)=>{
     let userid=JSON.parse(req.cookies.oslLogUser).usn
 
     livePage.getLastLogin(userid)
-    .then(lastLoginDateAndTime=>{
-        console.log(lastLoginDateAndTime)
+    .then(userLoginDetails=>{
+        console.log(userLoginDetails)
         res.send({
             err:false,
-            nameOfUser:lastLoginDateAndTime.name,
-            lastLogin:lastLoginDateAndTime.lastLogin
+            nameOfUser:userLoginDetails.userData.name,
+            lastLogin:userLoginDetails.userData.lastLogin
         })
     })
     .catch(err=>{

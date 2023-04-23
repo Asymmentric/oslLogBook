@@ -1,15 +1,16 @@
-const {users}=require('../userSchema')
+const { users } = require('../userSchema')
 
-exports.getLastLogin=async (userId)=>{
+exports.getLastLogin = async (userId) => {
     return new Promise((resolve, reject) => {
-        users.findOne({ $or: [{ email: userId }, { usn: userId }] },{lastLogin:1,usn:1,name:1})
-        .then(userData=>{
-            
-            resolve(userData)
-        })
-        .catch(err=>{
-            reject({err:true,msg:`Couldn't get last login details`})
-        })
+        users.findOne({ $or: [{ email: userId }, { usn: userId }] })
+            .then(userData => {
+                console.log(userData)
+                userData.lastLogin ? resolve({ userData }) : resolve({ userData, newUser: true })
+            })
+            .catch(err => {
+                console.log(err)
+                reject({ err: true, msg: `Couldn't get last login details` })
+            })
     })
 
 }
