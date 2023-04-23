@@ -73,6 +73,7 @@ npm start
 # Contributing Guidelines
 Contributions to the OSL Digital Logbook are always welcome! If you'd like to contribute, please follow these guidelines:
 - Submit an issue or feature request before submitting a pull request.
+- Have a look at [good first issues](https://github.com/Asymmentric/oslLogBook/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 - Fork the repository and make your changes on a new branch.
 - Submit a pull request with a detailed description of your changes.
 
