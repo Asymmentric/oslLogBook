@@ -14,9 +14,9 @@ module.exports = (app) => {
     app.get('/login', verifyToken, register.renderLogin)
     app.post('/login', validation.validateLogin, verifyToken, loginFunc)
 
-    app.get('/oslLog/api/v1/scan/entry',verifyToken, getLocationFunc)
+    // app.get('/oslLog/api/v1/scan/entry',verifyToken, getLocationFunc)
     // app.get('/oslLog/api/v1/scan/entry3', verifyToken, register.scanLogFunc)
-    app.post('/oslLog/api/v1/scan/entry2',verifyToken,register.scanLogFunc)
+    app.get('/oslLog/api/v1/scan/entry',verifyToken,register.scanLogFunc)
  
     
 

@@ -9,7 +9,7 @@ exports.livePageFunc=(req,res)=>{
 
     livePage.getLastLogin(userid)
     .then(userLoginDetails=>{
-        console.log(userLoginDetails)
+        // console.log(userLoginDetails)
         res.send({
             err:false,
             nameOfUser:userLoginDetails.userData.name,

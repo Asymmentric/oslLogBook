@@ -21,18 +21,14 @@ exports.homeFunc = (req, res) => {
 }
 
 exports.scanLogFunc = (req, res) => {
-    const { latitude, longitude, geoLocTime } = req.body;
+    
     const userDateTime = new Date()
     let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
-    locationVerification(latitude, longitude)
-        .then(msg => {
-            if (req.cookies.oslLogUser) {
-                usn = JSON.parse(req.cookies.oslLogUser).usn
-                console.log(userDateTime)
-                return getLastLogin(usn)
-            }
-            else res.send({err:false,redirect:`/register?redirect=${req.url}`})
-        })
+    if (req.cookies.oslLogUser) {
+
+        usn = JSON.parse(req.cookies.oslLogUser).usn
+        console.log(userDateTime)
+        getLastLogin(usn)
         .then(lastLoginDetails => {
 
             if (lastLoginDetails.newUser) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, true)
@@ -43,19 +39,18 @@ exports.scanLogFunc = (req, res) => {
         .then((msg) => {
             console.log(msg);
             // res.send({Code:msg.code,msg:msg.msg})
-            res.send({err:false,redirect:`/livepage`})
+            // res.send({err:false,redirect:`/livepage`})
+            res.redirect('/livepage')
         })
         .catch((err) => {
             console.log(err)
-            res.send({err:true,write:`<center>
-            <h3>
-                If you're seeing this...
-            </h3>
-            <h5>
-                It seeems you tried scanning the QR code from outside OSL.
-            </h5>
-        </center>`})
+            res.send({err:true,msg:`Some error occured. Please try again later`})
         })
+    }
+    // else res.send({err:false,redirect:`/register?redirect=${req.url}`})
+    else res.redirect(`/livepage?redirect=${req.url}`)
+    
+        
 
 }
 
