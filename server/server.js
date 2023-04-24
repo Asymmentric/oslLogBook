@@ -41,6 +41,6 @@ app.listen(port,()=>{
     console.log(`Running on ${port}...`)
 })
 
-// app.use('/register',express.static(path.join(__dirname,'../client')))
+
 
 module.exports=app 

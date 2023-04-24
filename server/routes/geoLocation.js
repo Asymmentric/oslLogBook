@@ -29,7 +29,7 @@ exports.getLocationFunc = (req, res) => {
       }
       error=(err)=>{
         console.warn('ERROR:'+err.code + err.message)
-        document.write('<h3>If you're seeing this....</h3><h5>It seems you're browser is blocking the location access</h5>')
+        document.write("<center><h3>If you're seeing this....</h3><h5>It seems you're browser is blocking the location access</h5></center>")
       }
       navigator.geolocation.getCurrentPosition(success,error,options)
       </script>
