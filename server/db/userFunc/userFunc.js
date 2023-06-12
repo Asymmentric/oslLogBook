@@ -23,9 +23,8 @@ async function createUser(usn, name, email, password) {
     })
 }
 
-async function userExists(usn, email) {
+async function userExists(usn, email, resetPwd) {
     let user = await users.find({ $or: [{ email: email }, { usn: usn }] })
-
     return new Promise((resolve, reject) => {
         if (user.length === 0) resolve(true)
         else reject({ msg: `User Exists with USN or Email`, id: user[0]._id, email: user[0].email, usn: user[0].usn })
@@ -54,8 +53,30 @@ async function loginCheck(userId, password) {
     })
 }
 
+async function userExistsResetPwd(q) {
+    let user = await users.find({ $or: [{ email: q }, { usn: q }] })
+    return new Promise((resolve, reject) => {
+        if (user.length === 0) reject({ err: true, msg: `Can not find user with ${q}` })
+        else resolve({ user })
+    })
+}
 
-
+async function resetUserPassword(email, password) {
+    const finalPassword = await cryptPwd.encryptPwd(password)
+    return new Promise((resolve, reject) => {
+        users.updateOne({ email: email }, {
+            password: finalPassword
+        })
+            .then(msg => {
+                console.log(msg)
+                resolve(`Changed password for ${email}. Please login using new password`)
+            })
+            .catch(err => {
+                console.log(err)
+                reject(`Unable to update password. Please try again later.`)
+            })
+    })
+}
 module.exports = {
-    createUser, userExists, loginCheck
+    createUser, userExists, loginCheck, userExistsResetPwd, resetUserPassword
 }

@@ -41,3 +41,27 @@ exports.sendOTP = (email, name,otp) => {
     })
 }
 
+exports.sendPasswordReset= (name,email,resetUrl) => {
+    return new Promise((resolve, reject) => {
+        transporter.sendMail({
+             from: process.env.ACCOUNT_USER,
+             to:email,
+             subject:'Reset Password for OSL Logbook',
+             html:`
+             <p>Hey ${name}</p>
+             <p>Reset password was initiated for your account.</b>
+             Click the following link to reset your passwrd : ${resetUrl}
+             </p>
+             <p> Please do not share this.</p>
+             <P> Ignore if not done by you</p>
+             `
+            }).then(msg=>{
+                console.log("Email sent");
+                resolve({err:false,msg:'Reset link sent successfully'})
+            }).catch(err=>{
+                console.log(err)
+                reject({err:true,msg:`Couldn't proceed. Please try again later.`})
+            })
+    })
+}
+

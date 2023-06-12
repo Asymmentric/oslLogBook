@@ -4,6 +4,7 @@ const path=require('path')
 const cookieParser=require('cookie-parser')
 const dotenv=require('dotenv').config()
 const session=require('express-session')
+const url=require('node:url')
 
 const routes=require('./routes/route')
 const handler=require('./util/handler/notFound')
@@ -29,7 +30,16 @@ app.use(session({
         maxAge:oneDay
     }
 }))
-
+app.use((req,res,next)=>{
+    let url=req.protocol + '://' + req.get('host') + req.originalUrl
+    let currentUrl=new URL(url)
+    req.data={
+        baseUrl:currentUrl.origin
+    }
+    req.data.baseUrl=currentUrl.origin
+    req.data.pathname=currentUrl.pathname
+    next()
+})
 routes(app)
 
 app.use('/client',express.static(path.join(__dirname,'../client')))
@@ -37,7 +47,7 @@ app.use('/client',express.static(path.join(__dirname,'../client')))
 app.use('*',handler.notFound)
 
 app.listen(port,()=>{
-    console.log(__dirname)
+    
     console.log(`Running on ${port}...`)
 })
 

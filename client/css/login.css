@@ -74,6 +74,17 @@ body {
     background-color:"black";
 }
 
+.form-field button[type="button"]:hover {
+    background-color:"black";
+}
+
+#forgot-pwd{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+
 #err-box{
     background-color: rgb(220, 76, 100,0.4);
     /* padding: 10px; */

@@ -1,5 +1,8 @@
-const { userExists } = require("../db/userFunc/userFunc");
-const { generateOTP, sendOTP } = require("../services/mailer")
+const url = require('url')
+
+const { userExists, userExistsResetPwd } = require("../db/userFunc/userFunc");
+const { generateOTP, sendOTP, sendPasswordReset } = require("../services/mailer");
+const { generateToken } = require("../util/auth/authFunc");
 
 exports.routeSendOTP = async (req, res) => {
     let otp = generateOTP();
@@ -48,4 +51,37 @@ exports.routeVerifyOTP = async (req, res) => {
         res.send({ err: true, msg: 'Unknown Error occured. Try Again' })
     }
 
+}
+
+exports.routeSendForgotPasswordLink = async (req, res) => {
+    try {
+        const { q } = req.body
+        const user = await userExistsResetPwd(q)
+        let userDetail = user.user[0]
+        const { name, email } = userDetail
+        console.log(name, email)
+        const token = await generateToken({ name, email })
+        let searchParams = new url.URLSearchParams([
+            ['q', q],
+            ['name', name],
+            ['token', token]
+        ])
+        let resetPasswordUrl = `${req.data.baseUrl}/reset-password?${searchParams.toString()}`
+        console.log(resetPasswordUrl)
+
+        const resetUrlSentStatus = await sendPasswordReset(name, email, resetPasswordUrl)
+        res.send({err:false,msg:`Password reset link sent to your Email`})
+    } catch (error) {
+        console.log(error)
+        res.send({ err: true, msg: `${error.msg}` })
+    }
+
+    //check if user exists
+    //match details of name and query
+
+    // generateToken({name,q})
+    // .then(token=>{
+    //     const resetPasswordUrl=`http://localhost:9090/reserpassword?q=${q}&name=${name}&token=${token}`
+    //     return sendPasswordReset(name,q,token)
+    // })
 }

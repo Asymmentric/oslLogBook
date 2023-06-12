@@ -1,8 +1,8 @@
 const register = require('./register')
-const { registerFunc, generateToken, loginFunc, verifyToken } = require('../util/auth/authFunc')
+const { registerFunc, generateToken, loginFunc, verifyToken, resetpassword  } = require('../util/auth/authFunc')
 const validation = require('../util/pwdFunc')
 const livePage = require('./livePage')
-const { routeSendOTP, routeVerifyOTP } = require('./mailer')
+const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('./mailer')
 const { getLocationFunc, locationVerification } = require('./geoLocation')
 
 module.exports = (app) => {
@@ -26,7 +26,12 @@ module.exports = (app) => {
     app.post('/auth/route/type/otp/send',verifyToken,validation.validateRegistration,routeSendOTP)
     app.post('/auth/route/type/otp/verify',verifyToken,routeVerifyOTP)
 
-    app.post('/auth/route/type/password/forgot',verifyToken,routeSendOTP)
+    //reset password
+    
+    app.post('/auth/route/type/password/forgot',routeSendForgotPasswordLink)
+    // app.get('/resetpassword',resetPasswordRenderFunc)
+    app.get('/reset-password',register.renderForgotPassword)
+    app.post('/updatepassword',register.updateUserPassword)
 
     app.get('/admin/register')
     app.post('/admin/register')

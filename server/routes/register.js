@@ -5,6 +5,7 @@ const { registerFunc, generateToken, loginFunc, verifyToken } = require('../util
 const path = require('path')
 const { getLastLogin } = require('../db/scanAndLog/livePage')
 const { locationVerification } = require('./geoLocation')
+const jwt=require('jsonwebtoken')
 
 
 exports.homeFunc = (req, res) => {
@@ -14,14 +15,13 @@ exports.homeFunc = (req, res) => {
     console.log(req.url)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
     res.send(`<center>
-    <h1>Registrations before 20 Apr 2023 are not valid. Please Register again.</h1>
     <h1>Scan the QR Code to log your entry</h1>
     <img src='/client/QRCode.png'>
     </center>`)
 }
 
 exports.scanLogFunc = (req, res) => {
-    
+
     const userDateTime = new Date()
     let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
     if (req.cookies.oslLogUser) {
@@ -29,28 +29,28 @@ exports.scanLogFunc = (req, res) => {
         usn = JSON.parse(req.cookies.oslLogUser).usn
         console.log(userDateTime)
         getLastLogin(usn)
-        .then(lastLoginDetails => {
+            .then(lastLoginDetails => {
 
-            if (lastLoginDetails.newUser) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, true)
+                if (lastLoginDetails.newUser) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, true)
 
-            else if (lastLoginDetails.userData.lastLogin < dayStart) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, false)
-            else return { lastLogin: lastLoginDetails.userData.lastLogin }
-        })
-        .then((msg) => {
-            console.log(msg);
-            // res.send({Code:msg.code,msg:msg.msg})
-            // res.send({err:false,redirect:`/livepage`})
-            res.redirect('/livepage')
-        })
-        .catch((err) => {
-            console.log(err)
-            res.send({err:true,msg:`Some error occured. Please try again later`})
-        })
+                else if (lastLoginDetails.userData.lastLogin < dayStart) return scan.scanLog(usn, req.ip, req.headers['user-agent'], userDateTime, false)
+                else return { lastLogin: lastLoginDetails.userData.lastLogin }
+            })
+            .then((msg) => {
+                console.log(msg);
+                // res.send({Code:msg.code,msg:msg.msg})
+                // res.send({err:false,redirect:`/livepage`})
+                res.redirect('/livepage')
+            })
+            .catch((err) => {
+                console.log(err)
+                res.send({ err: true, msg: `Some error occured. Please try again later` })
+            })
     }
     // else res.send({err:false,redirect:`/register?redirect=${req.url}`})
     else res.redirect(`/livepage?redirect=${req.url}`)
-    
-        
+
+
 
 }
 
@@ -66,4 +66,44 @@ exports.renderLogin = (req, res) => {
     res.sendFile(path.join(__dirname, '../../client/login.html'))
 }
 
+exports.renderForgotPassword = (req, res) => {
+    console.log('query@login', req.query)
+    const { name, q, token } = req.query
+    jwt.verify(token, process.env.JWT_SECRET_TOKEN, (err, result) => {
+        if (!err) {
+            console.log('jwt res-> ', result)
+            res.sendFile(path.join(__dirname, '../../client/passwordReset.html'))
+        }
+        else res.redirect('/login')
+    })
+}
 
+exports.updateUserPassword=(req,res)=>{
+    const {token}=req.query
+    const {pwd2,pwd1}=req.body
+    jwt.verify(token,process.env.JWT_SECRET_TOKEN,(err,result)=>{
+        if(!err){
+            console.log(`jwt res=>`,result)
+            const email=result.email
+            if(pwd2===pwd1) {
+                users.resetUserPassword(email,pwd1)
+                .then(msg=>{
+                    console.log(msg)
+                    res.send({err:false,redirect:`/`})
+                })
+                .catch(err=>{
+                    console.log(err)
+                    res.send({err:true,msg:err.msg})
+                })
+            }
+            else{
+                res.send({err:true,msg:"Passwords do not match"})
+            }
+        }
+        else{
+            res.send({err:true,redirect:'/login',msg:'Invalid'})
+        }
+    })
+    
+    
+}

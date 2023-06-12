@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const users = require('../../db/userFunc/userFunc')
 const { getQueryParams } = require('../redirector')
+const { renderForgotPassword } = require('../../routes/register')
 
 const registerFunc = async (req, res) => {
     console.log(1234, req.url)
@@ -79,7 +80,7 @@ const generateToken = async (payload) => {
     return new Promise((resolve, reject) => {
         let token = jwt.sign(payload, process.env.JWT_SECRET_TOKEN, {
             algorithm: 'HS384',
-            expiresIn: '7d'
+            expiresIn: '1h'
         })
 
         if (token) resolve(token)
@@ -117,9 +118,21 @@ const verifyToken = (req, res, next) => {
 
 }
 
+// const resetPasswordRenderFunc=async(req,res)=>{
+//     const {name,q,token}=req.query
+//     jwt.verify(token,process.env.JWT_SECRET_TOKEN,(err,result)=>{
+//         if(!err){
+//             console.log('jwt res-> ', result)
+//             res.redirect('/reset-password?q=')
+//         }
+//         else res.redirect('/login')
+//     })
+
+// }
 
 module.exports = {
     registerFunc,
     loginFunc,
-    verifyToken
+    verifyToken,
+    generateToken
 }
