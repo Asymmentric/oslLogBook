@@ -4,6 +4,7 @@ const validation = require('../util/pwdFunc')
 const livePage = require('./livePage')
 const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('./mailer')
 const { getLocationFunc, locationVerification } = require('./geoLocation')
+const { logoutFunc } = require('./logout')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -32,6 +33,9 @@ module.exports = (app) => {
     // app.get('/resetpassword',resetPasswordRenderFunc)
     app.get('/reset-password',register.renderForgotPassword)
     app.post('/updatepassword',register.updateUserPassword)
+
+    //logout
+    app.get('/logout',logoutFunc)
 
     app.get('/admin/register')
     app.post('/admin/register')
