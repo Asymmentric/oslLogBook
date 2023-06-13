@@ -6,6 +6,8 @@ const path = require('path')
 const { getLastLogin } = require('../db/scanAndLog/livePage')
 const { locationVerification } = require('./geoLocation')
 const jwt=require('jsonwebtoken')
+const url=require('url')
+const { getQueryParams } = require('../util/redirector')
 
 
 exports.homeFunc = (req, res) => {
@@ -79,9 +81,9 @@ exports.renderForgotPassword = (req, res) => {
 }
 
 exports.updateUserPassword=(req,res)=>{
-    const {token}=req.query
-    const {pwd2,pwd1}=req.body
-    jwt.verify(token,process.env.JWT_SECRET_TOKEN,(err,result)=>{
+    const {pwd2,pwd1,url}=req.body
+    let urlQueryString=getQueryParams(url)
+    jwt.verify(urlQueryString.token,process.env.JWT_SECRET_TOKEN,(err,result)=>{
         if(!err){
             console.log(`jwt res=>`,result)
             const email=result.email
@@ -89,7 +91,7 @@ exports.updateUserPassword=(req,res)=>{
                 users.resetUserPassword(email,pwd1)
                 .then(msg=>{
                     console.log(msg)
-                    res.send({err:false,redirect:`/`})
+                    res.send({err:false,redirect:`/login`})
                 })
                 .catch(err=>{
                     console.log(err)
@@ -97,10 +99,12 @@ exports.updateUserPassword=(req,res)=>{
                 })
             }
             else{
+                
                 res.send({err:true,msg:"Passwords do not match"})
             }
         }
         else{
+            
             res.send({err:true,redirect:'/login',msg:'Invalid'})
         }
     })
