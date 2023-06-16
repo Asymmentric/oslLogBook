@@ -5,6 +5,7 @@ const livePage = require('./livePage')
 const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('./mailer')
 const { getLocationFunc, locationVerification } = require('./geoLocation')
 const { logoutFunc } = require('./logout')
+const { getTodayData } = require('../db/admin/getData')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -36,9 +37,26 @@ module.exports = (app) => {
 
     //logout
     app.get('/logout',logoutFunc)
+    app.get("/today/logs",register.todayEntries)
 
-    app.get('/admin/register')
-    app.post('/admin/register')
+    app.get('/admin/entries/today',(req,res)=>{
+        getTodayData()
+        .then(result=>{
+            // console.log(result)
+            let userDetails=result
+            console.log(userDetails)
+            let final=[]
+            userDetails.forEach(user => {
+                final.push({
+                    Name:user.name,
+                    Login:user.lastLogin
+                })
+            });
+            
+            res.send(final)
+        })
+    })
+    
 
     
 }

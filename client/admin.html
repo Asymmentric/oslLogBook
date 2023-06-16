@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Logs</title>
+</head>
+<body>
+    <table>
+        <tr>
+            
+        </tr>
+    </table>
+    <script>
+        let string=''
+        fetch('/admin/entries/today')
+        .then(response=>response.json())
+        .then(data=>{
+            data.forEach(user => {
+
+                string+=`<p>Name:${user.Name}<br>Time:${new Date(user.Login)}</p>`
+                
+            });
+            document.body.innerHTML=`<center>${string}</center>`
+        })
+    </script>
+</body>
+</html>
