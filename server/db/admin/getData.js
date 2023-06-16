@@ -21,3 +21,16 @@ exports.getTodayData = () => {
             })
     })
 }
+
+exports.getAllData=()=>{
+    return new Promise((resolve, reject) => {
+        users.find({},{name:1,'logsData:time':1})
+        .then(results=>{
+            resolve(results)
+        })
+        .catch(err=>{
+            console.log(err)
+            reject('Error fetching data')
+        })
+    })
+}
