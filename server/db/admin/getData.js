@@ -11,7 +11,7 @@ exports.getTodayData = () => {
                 $gte:currentDate,
                 $lte:nextDate
             }
-        }, { _id: 0, name: 1, "logsData.time": 1,lastLogin:1 })
+        }, { _id: 0, name: 1, "logsData.time": 1,lastLogin:1 }).sort({'logsData':1})
             .then(results => {
                 resolve(results)
             })
