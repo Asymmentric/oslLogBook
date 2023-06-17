@@ -24,7 +24,12 @@ exports.getTodayData = () => {
 
 exports.getAllData=()=>{
     return new Promise((resolve, reject) => {
-        users.find({},{name:1,'logsData:time':1})
+        users.aggregate([{
+            $project:{
+                name:1,
+                logsData:{time:1}
+            }
+        }])
         .then(results=>{
             resolve(results)
         })

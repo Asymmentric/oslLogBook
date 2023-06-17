@@ -38,7 +38,7 @@ module.exports = (app) => {
     //logout
     app.get('/logout',logoutFunc)
     app.get("/logs/today",register.todayEntries)
-    app.get("logs/all",(req,res)=>{
+    app.get("/logs/all",(req,res)=>{
         getAllData()
         .then(result=>{
             res.send(result)
