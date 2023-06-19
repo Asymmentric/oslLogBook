@@ -2,7 +2,7 @@ html,body {
     height: 100%;
 }
 body {
-    background: #0f3854;
+    background-color: #0f3854;
     background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
     background-size: 100%;
 }
@@ -35,3 +35,30 @@ p {
         padding: 20px 0 0;
     }
 }
+
+#logout {
+    border: 1px solid white;
+    padding: 5px;
+    width: 40%;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    text-align: center;
+    background-color: white;
+    text-decoration: none;
+}
+
+.exitLog{
+    border: 1px solid rgb(149, 214, 227);
+    padding: 20px;
+    width: 30%;
+    
+    border-radius: 10px;
+    background-color: rgb(255,255,255,0.3);
+    font-size: 17px;
+    cursor: pointer;
+    margin: auto;
+    margin-bottom: 20px;
+
+}
+

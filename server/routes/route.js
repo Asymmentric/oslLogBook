@@ -4,7 +4,7 @@ const validation = require('../util/pwdFunc')
 const livePage = require('./livePage')
 const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('./mailer')
 const { getLocationFunc, locationVerification } = require('./geoLocation')
-const { logoutFunc } = require('./logout')
+const { logoutFunc, exitScanFunc } = require('./logout')
 const { getTodayData, getAllData } = require('../db/admin/getData')
 
 module.exports = (app) => {
@@ -20,7 +20,8 @@ module.exports = (app) => {
     // app.get('/oslLog/api/v1/scan/entry3', verifyToken, register.scanLogFunc)
     app.get('/oslLog/api/v1/scan/entry',verifyToken,register.scanLogFunc)
  
-    
+    // Out-time
+    app.post('/oslLog/exit',exitScanFunc)
 
     app.get('/livepage',verifyToken, livePage.renderLivePage)
     app.post('/livepage', verifyToken, livePage.livePageFunc)
@@ -37,6 +38,8 @@ module.exports = (app) => {
 
     //logout
     app.get('/logout',logoutFunc)
+
+    //admin -get logs data
     app.get("/logs/today",register.todayEntries)
     app.get("/logs/all",(req,res)=>{
         getAllData()
@@ -53,7 +56,6 @@ module.exports = (app) => {
         .then(result=>{
             // console.log(result)
             let userDetails=result
-            console.log(userDetails)
             let final=[]
             userDetails.forEach(user => {
                 final.push({

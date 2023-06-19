@@ -46,7 +46,7 @@ exports.scanLogFunc = (req, res) => {
             })
             .catch((err) => {
                 console.log(err)
-                res.send({ err: true, msg: `Some error occured. Please try again later` })
+                res.redirect('/logout')
             })
     }
     // else res.send({err:false,redirect:`/register?redirect=${req.url}`})

@@ -12,6 +12,7 @@ exports.scanLog = async function scanLog(usn, ip, useragent, userDateTime, newUs
                 },
                 {
                     lastLogin: userDateTime,
+                    currentLogStatus:true,
                     $push: {
                         logsData: [{
                             usersagent: useragent, ip: ip, time: userDateTime
@@ -37,6 +38,7 @@ exports.scanLog = async function scanLog(usn, ip, useragent, userDateTime, newUs
             },
             {
                 lastLogin: userDateTime,
+                currentLogStatus:true,
                 $push: {
                     logsData: [{
                         usersagent: useragent, ip: ip, time: userDateTime
