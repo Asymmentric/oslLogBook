@@ -20,7 +20,7 @@ exports.livePageFunc=(req,res)=>{
         else res.send({
             err:false,
             nameOfUser:userLoginDetails.userData.name,
-            time:userLoginDetails.userData.lastLogin,
+            time:userLoginDetails.userData.lastOut,
             msg:'Exit at',
             status:userLoginDetails.userData.currentLogStatus
         })

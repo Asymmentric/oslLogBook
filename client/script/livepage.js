@@ -1,5 +1,3 @@
-
-
 const timeBlock=document.getElementById('lastLoginTime')
 const dateBlock=document.getElementById('lastLoginDate')
 const nameBlock=document.getElementById('userName')
@@ -12,10 +10,17 @@ exitLogBlock[0].addEventListener('click',(e)=>{
         body:''
     })
     .then(response=>response.json())
-    .then(data=>{
-        if(data.err) location.reload()
-        console.log(data.msg)
-        dateBlock.innerText='\n\n Exit at \n\n'+new Date(data.msg)+'\n\n'
+    .then(lastLoginDetails=>{
+        if(lastLoginDetails.err) location.reload()
+        else {
+            let lastLog=new Date(lastLoginDetails.time)
+            dateBlock.innerText='\n\n '+lastLoginDetails.msg+' \n\n'+lastLog+'\n\n'
+            if(!lastLoginDetails.status){
+                exitContainer.innerHTML=''
+                // document.body.style.backgroundImage=`radial-gradient(ellipse at center,  #d3202f  0%, #000000 70%);`
+                document.body.style.backgroundColor='white'
+            }
+        }
     })
 })
 

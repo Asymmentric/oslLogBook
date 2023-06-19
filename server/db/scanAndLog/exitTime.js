@@ -4,7 +4,7 @@ exports.exitLog=async (usn,userDateTime)=>{
     let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
     
     return new Promise((resolve, reject) => {
-        users.findOneAndUpdate({usn,currentLogStatus:true},{
+        users.findOneAndUpdate({usn},{
             lastOut:userDateTime,
             currentLogStatus:false,
             $push:{

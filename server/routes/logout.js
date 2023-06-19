@@ -13,16 +13,37 @@ exports.exitScanFunc = (req, res) => {
         usn = JSON.parse(req.cookies.oslLogUser).usn
         getLastLogin(usn)
             .then(lastLoginDetails => {
-                console.log("last->",lastLoginDetails.userData.currentLogStatus)
-                if(lastLoginDetails.userData.lastLogin<userDateTime){
-                    return exitLog(usn,userDateTime)
+                console.log("last->", lastLoginDetails.userData.currentLogStatus)
+                if (lastLoginDetails.userData.lastLogin < userDateTime) {
+                    console.log(`Logging...`)
+                    return exitLog(usn, userDateTime)
                 }
-                else return {lastOut:userDateTime}
+                else {
+                    console.log(`parse`)
+                    return { lastOut: userDateTime }}
             })
             .then(msg => {
-                console.log(msg)
-                if(!msg.currentLogStatus) res.send({err:false,msg})
-                else res.send({ err: false, msg: msg.lastOut })
+                return getLastLogin(usn)
+                // console.log(msg)
+                // if (!msg.currentLogStatus) res.send({ err: false, msg:msg.lastLogin })
+                // else res.send({ err: false, msg: msg.lastOut })
+            })
+            .then(userLoginDetails=>{
+                if(userLoginDetails.userData.currentLogStatus)  res.send({
+                    err:false,
+                    nameOfUser:userLoginDetails.userData.name,
+                    time:userLoginDetails.userData.lastLogin,
+                    msg:'Last Logged at',
+                    status:userLoginDetails.userData.currentLogStatus
+                })
+                else res.send({
+                    err:false,
+                    nameOfUser:userLoginDetails.userData.name,
+                    time:userLoginDetails.userData.lastOut,
+                    msg:'Exit at',
+                    status:userLoginDetails.userData.currentLogStatus
+                })
+                
             })
             .catch(err => {
                 console.log(err)
