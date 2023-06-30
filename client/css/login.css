@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #f1f1f1;
+    background-color: #0f3854;
     font-family: Arial, sans-serif;
 }
 
@@ -17,7 +17,7 @@ body {
 }
 
 .login-form-container {
-    background-color: #fff;
+    background-color: #F8E0DE;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     padding: 40px;
@@ -32,7 +32,13 @@ body {
 
 .form-field {
     margin-bottom: 20px;
+    text-align: center;
+    
+   
 }
+
+
+
 
 .form-field label {
     display: block;
@@ -40,6 +46,8 @@ body {
     font-weight: 600;
     margin-bottom: 5px;
     color: #24292e;
+    
+   
 }
 
 .form-field input[type="text"],
@@ -50,7 +58,7 @@ body {
     width: 100%;
     font-size: 1.2rem;
     color: #24292e;
-    background-color: #f7f7f7;
+    background-color: #c2c7c7;
 }
 
 .form-field input[type="text"]:focus,
@@ -71,7 +79,8 @@ body {
 }
 
 .form-field button[type="submit"]:hover {
-    background-color:"black";
+    background-color: #737373;
+
 }
 
 .form-field button[type="button"]:hover {
@@ -92,4 +101,9 @@ body {
     text-align: center;
     font-size: 24px;
     color: rgb(220,76,100);
+}
+body {
+    background: #0f3854;
+    background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
+    background-size: 100%;
 }
