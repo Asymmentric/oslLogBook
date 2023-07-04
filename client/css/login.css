@@ -86,10 +86,10 @@ body {
 .form-field button[type="button"]:hover {
     background-color:"black";
 }
-#password{
+#password::placeholder{
     text-transform: capitalize;
 }
-#userId{
+#userId::placeholder{
     text-transform: capitalize;
 }
 
