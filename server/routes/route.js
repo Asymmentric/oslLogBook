@@ -4,6 +4,8 @@ const validation = require('../util/pwdFunc')
 const livePage = require('./livePage')
 const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('./mailer')
 const { getLocationFunc, locationVerification } = require('./geoLocation')
+const { logoutFunc, exitScanFunc } = require('./logout')
+const { getTodayData, getAllData } = require('../db/admin/getData')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -18,7 +20,8 @@ module.exports = (app) => {
     // app.get('/oslLog/api/v1/scan/entry3', verifyToken, register.scanLogFunc)
     app.get('/oslLog/api/v1/scan/entry',verifyToken,register.scanLogFunc)
  
-    
+    // Out-time
+    app.post('/oslLog/exit',exitScanFunc)
 
     app.get('/livepage',verifyToken, livePage.renderLivePage)
     app.post('/livepage', verifyToken, livePage.livePageFunc)
@@ -33,8 +36,38 @@ module.exports = (app) => {
     app.get('/reset-password',register.renderForgotPassword)
     app.post('/updatepassword',register.updateUserPassword)
 
-    app.get('/admin/register')
-    app.post('/admin/register')
+    //logout
+    app.get('/logout',logoutFunc)
+
+    //admin -get logs data
+    app.get("/logs/today",register.todayEntries)
+    app.get("/logs/all",(req,res)=>{
+        getAllData()
+        .then(result=>{
+            res.send(result)
+        })
+        .catch(err=>{
+            res.redirect('/')
+        })
+    })
+
+    app.get('/admin/entries/today',(req,res)=>{
+        getTodayData()
+        .then(result=>{
+            // console.log(result)
+            let userDetails=result
+            let final=[]
+            userDetails.forEach(user => {
+                final.push({
+                    Name:user.name,
+                    Login:user.lastLogin
+                })
+            });
+            
+            res.send(final)
+        })
+    })
+    
 
     
 }

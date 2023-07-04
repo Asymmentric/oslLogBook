@@ -10,11 +10,21 @@ exports.livePageFunc=(req,res)=>{
     livePage.getLastLogin(userid)
     .then(userLoginDetails=>{
         // console.log(userLoginDetails)
-        res.send({
+        if(userLoginDetails.userData.currentLogStatus)  res.send({
             err:false,
             nameOfUser:userLoginDetails.userData.name,
-            lastLogin:userLoginDetails.userData.lastLogin
+            time:userLoginDetails.userData.lastLogin,
+            msg:'Last Logged at',
+            status:userLoginDetails.userData.currentLogStatus
         })
+        else res.send({
+            err:false,
+            nameOfUser:userLoginDetails.userData.name,
+            time:userLoginDetails.userData.lastOut,
+            msg:'Exit at',
+            status:userLoginDetails.userData.currentLogStatus
+        })
+        
     })
     .catch(err=>{
         console.log(err.msg)

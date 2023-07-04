@@ -46,7 +46,7 @@ exports.scanLogFunc = (req, res) => {
             })
             .catch((err) => {
                 console.log(err)
-                res.send({ err: true, msg: `Some error occured. Please try again later` })
+                res.redirect('/logout')
             })
     }
     // else res.send({err:false,redirect:`/register?redirect=${req.url}`})
@@ -79,7 +79,10 @@ exports.renderForgotPassword = (req, res) => {
         else res.redirect('/login')
     })
 }
-
+exports.todayEntries=(req,res)=>{
+    console.log('query@login', req.query)
+    res.sendFile(path.join(__dirname, '../../client/admin.html'))
+}
 exports.updateUserPassword=(req,res)=>{
     const {pwd2,pwd1,url}=req.body
     let urlQueryString=getQueryParams(url)

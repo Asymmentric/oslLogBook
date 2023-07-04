@@ -89,7 +89,7 @@ const generateToken = async (payload) => {
 
 const verifyToken = (req, res, next) => {
     console.log('989', req.headers.referer)
-    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/osllog/api/v1/scan/entry2', '/osllog/api/v1/scan/entry3', '/livepage']
+    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/livepage']
     if (req.cookies.oslLogAuthUSN) {
         const token = req.cookies.oslLogAuthUSN
         if (!token) return res.send({ msg: 'Authentication token missisng' })

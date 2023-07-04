@@ -5,6 +5,10 @@ const logSchema=new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
+    outTime:{
+        type:Date,
+        default:Date.now()
+    },
     useragent:String,
     ip:String
 })

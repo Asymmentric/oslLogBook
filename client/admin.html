@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Logs</title>
+    <style>
+        p{
+            color: red;
+            font-size: 25px;
+        }
+
+        div{
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            width: 1000px;
+            border-radius: 23px;
+        }
+        strong{
+            font-size: 23px;
+            color: rebeccapurple;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let string=''
+        fetch('/admin/entries/today')
+        .then(response=>response.json())
+        .then(data=>{
+            data.forEach(user => {
+
+                string+=`<div><p class='line'><strong>Name: </strong>${user.Name}<br><br><strong>Time: </strong>${new Date(user.Login)}</p></div>`
+                
+            });
+            document.body.innerHTML=`<center>${string}</center>`
+        })
+    </script>
+</body>
+</html>
