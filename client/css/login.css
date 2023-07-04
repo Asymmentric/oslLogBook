@@ -86,6 +86,13 @@ body {
 .form-field button[type="button"]:hover {
     background-color:"black";
 }
+#password{
+    text-transform: capitalize;
+}
+#userId{
+    text-transform: capitalize;
+}
+
 
 #forgot-pwd{
     text-decoration: underline;
