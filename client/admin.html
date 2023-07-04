@@ -1,40 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Logs</title>
     <style>
-        p{
+        p {
             color: red;
             font-size: 25px;
         }
 
-        div{
+        div {
             border-bottom: 1px solid black;
             border-left: 1px solid black;
             width: 1000px;
             border-radius: 23px;
         }
-        strong{
+
+        strong {
             font-size: 23px;
             color: rebeccapurple;
         }
+        tr{
+            width: fit-content;
+            border: 2px solid black;
+            /* text-align: left; */
+            
+        }
+        th{
+            font-weight: bold;
+            border: 2px solid black;
+            padding:20px;
+            font-size:22px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        }
+        td{
+            padding: 20px 100px;
+            border: 2px solid black;
+            
+        }
+        .in-time{
+            /* box-shadow: rgba(13, 182, 44, 0.795) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; */
+            background-color: rgba(197, 216, 197, 0.556);
+            color: green;
+            border: 2px solid green;
+        }
+        .out-time{
+            /* box-shadow: rgba(255, 255, 255, 0.795) 0px 30px 60px -12px inset, rgba(255, 255, 255, 0.3) 0px 18px 36px -18px inset; */
+            background-color: rgba(216, 168, 168, 0.474);
+            color: red;
+            border: 2px solid red;
+        }
+        .inside{
+            background-color: rgba(144, 144, 223, 0.307);
+            color: rgb(6, 11, 108);
+            border: 2px solid blue;
+        }
+        
     </style>
 </head>
-<body>
-    <script>
-        let string=''
-        fetch('/admin/entries/today')
-        .then(response=>response.json())
-        .then(data=>{
-            data.forEach(user => {
 
-                string+=`<div><p class='line'><strong>Name: </strong>${user.Name}<br><br><strong>Time: </strong>${new Date(user.Login)}</p></div>`
-                
-            });
-            document.body.innerHTML=`<center>${string}</center>`
-        })
+<body>
+
+    <script>
+        let string = `
+        <table>
+        <tr class='table-head'>
+            <th>
+                NAME
+            </th>
+            <th>
+                DATE
+            </th>
+            <th>
+                IN
+            </th>
+            <th>
+                OUT
+            </th>
+        </tr>
+        
+    
+        `
+        fetch('/admin/entries/today')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(user => {
+                    if(!user.Out){
+                        string += `
+                        <tr>
+                    <td class="user-name">${user.Name.toUpperCase()}</td>
+                    <td class="date-today">${new Date(user.Login).toDateString()}</td>
+                    <td class="in-time">${new Date(user.Login).toLocaleTimeString().toUpperCase()}</td>
+                    
+                    <td class="out-time inside" style="">Doing awesome things</td>
+                    </tr>`
+                    }
+                    else{
+                        string += `
+                        <tr>
+                    <td class="user-name">${user.Name.toUpperCase()}</td>
+                    <td class="date-today">${new Date(user.Login).toDateString()}</td>
+                    <td class="in-time">${new Date(user.Login).toLocaleTimeString().toUpperCase()}</td>
+                    
+                    <td class="out-time">${new Date(user.Out).toLocaleTimeString().toUpperCase() }</td>
+                    </tr>`
+                    }
+                    // string += `<div><p class='line'><strong>Name: </strong>${user.Name}<br><br><strong>Time: </strong>${new Date(user.Login)}</p></div>`
+
+                });
+                string+=`</table>`
+                document.body.innerHTML = `<center>${string}</center>`
+            })
     </script>
 </body>
+
 </html>

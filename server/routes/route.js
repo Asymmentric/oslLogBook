@@ -40,6 +40,7 @@ module.exports = (app) => {
     app.get('/logout',logoutFunc)
 
     //admin -get logs data
+    app.get("/logs/yesterday",register.todayEntries)
     app.get("/logs/today",register.todayEntries)
     app.get("/logs/all",(req,res)=>{
         getAllData()
@@ -51,19 +52,29 @@ module.exports = (app) => {
         })
     })
 
-    app.get('/admin/entries/today',(req,res)=>{
-        getTodayData()
+    app.get('/admin/entries/:date',(req,res)=>{
+        
+        getTodayData(req.params.date)
         .then(result=>{
             // console.log(result)
             let userDetails=result
             let final=[]
             userDetails.forEach(user => {
+                console.log(user)
+                if(user.lastOut>user.lastLogin)
                 final.push({
                     Name:user.name,
-                    Login:user.lastLogin
+                    Login:user.lastLogin,
+                    Out:user.lastOut
+                })
+                else final.push({
+                    Name:user.name,
+                    Login:user.lastLogin,
+                    Out:false
+
                 })
             });
-            
+            console.log(final);
             res.send(final)
         })
     })
