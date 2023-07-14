@@ -57,15 +57,26 @@
             color: rgb(6, 11, 108);
             border: 2px solid blue;
         }
+        p{
+            padding: 10px;
+            border: 1px solid black;
+            width: 20%;
+            margin: auto;
+            margin-top: 20px;
+            cursor: pointer;
+        }
         
     </style>
 </head>
 
 <body>
-
+    <center><table></table><p>Yesterday's Logs</p></center>
+    
     <script>
+        const table=document.querySelector('table')
+        const yesterday=document.querySelector('p')
+        
         let string = `
-        <table>
         <tr class='table-head'>
             <th>
                 NAME
@@ -110,9 +121,63 @@
                     // string += `<div><p class='line'><strong>Name: </strong>${user.Name}<br><br><strong>Time: </strong>${new Date(user.Login)}</p></div>`
 
                 });
-                string+=`</table>`
-                document.body.innerHTML = `<center>${string}</center>`
+                
+                table.innerHTML = string
             })
+            yesterday.addEventListener('click',(e)=>{
+                yesterday.innerHTML=''
+            fetch('/admin/entries/yesterday')
+            .then(response => response.json())
+            .then(data => {
+                string=''
+                string = `
+        <tr class='table-head'>
+            <th>
+                NAME
+            </th>
+            <th>
+                DATE
+            </th>
+            <th>
+                IN
+            </th>
+            <th>
+                OUT
+            </th>
+        </tr>
+        
+    
+        `
+                data.forEach(user => {
+                    if(!user.Out){
+                        string += `
+                        <tr>
+                    <td class="user-name">${user.Name.toUpperCase()}</td>
+                    <td class="date-today">${new Date(user.Login).toDateString()}</td>
+                    <td class="in-time">${new Date(user.Login).toLocaleTimeString().toUpperCase()}</td>
+                    
+                    <td class="out-time">- - -Bit Lazy- - -</td>
+                    </tr>`
+                    }
+                    else{
+                        string += `
+                        <tr>
+                    <td class="user-name">${user.Name.toUpperCase()}</td>
+                    <td class="date-today">${new Date(user.Login).toDateString()}</td>
+                    <td class="in-time">${new Date(user.Login).toLocaleTimeString().toUpperCase()}</td>
+                    
+                    <td class="out-time">${new Date(user.Out).toLocaleTimeString().toUpperCase() }</td>
+                    </tr>`
+                    }
+                    // string += `<div><p class='line'><strong>Name: </strong>${user.Name}<br><br><strong>Time: </strong>${new Date(user.Login)}</p></div>`
+
+                });
+                
+                table.innerHTML =''
+                table.innerHTML=string
+            })
+        })
+
     </script>
 </body>
 
