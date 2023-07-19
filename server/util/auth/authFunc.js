@@ -91,9 +91,9 @@ const generateToken = async (payload, refresh) => {
 const verifyToken = async (req, res, next) => {
     console.log('989', req.headers.referer)
 
-    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/livepage']
+    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/livepage','/list/active/users']
 
-    let moderatorUrls = ['/logs/today']
+    let moderatorUrls = ['/logs/today',]
 
     if (req.cookies.oslLogAuthUSN) {
         const token = req.cookies.oslLogAuthUSN

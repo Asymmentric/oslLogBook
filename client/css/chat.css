@@ -1,0 +1,58 @@
+.chat-btn {
+    margin: 20px;
+    padding: 20px;
+    border: 2px solid black;
+    width: 20%;
+    cursor: pointer;
+}
+.chat-container {
+    
+    /* display: flex; */
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    border: 1px solid greenyellow;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px; /* Add padding at the bottom to separate from send-box */
+  }
+  
+  #users-list {
+    border: 1px solid yellow;
+    width: 40%;
+    flex: 1; /* Use flex: 1 to fill the remaining vertical space */
+    box-sizing: border-box;
+  }
+  
+  .user-burb {
+    height: 40px;
+    padding: 13px;
+    margin: 8px;
+    text-align: center;
+    border: 1px solid red;
+  }
+  
+  .prev-msg {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .chat-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .send-box {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  
+  .send-box input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+  }
+  

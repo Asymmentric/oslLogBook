@@ -6,6 +6,7 @@ const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('.
 const { getLocationFunc, locationVerification } = require('./geoLocation')
 const { logoutFunc, exitScanFunc } = require('./logout')
 const { getTodayData, getAllData, getDataByDate } = require('../db/admin/getData')
+const { getActiveUsers } = require('./webSocket')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -95,6 +96,8 @@ module.exports = (app) => {
                 res.send(final)
             })
     })
+
+    app.get('/list/active/users',verifyToken,getActiveUsers)
 
 
 

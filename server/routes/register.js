@@ -16,10 +16,7 @@ exports.homeFunc = (req, res) => {
     console.log(req.ip)
     console.log(req.url)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
-    res.send(`<center>
-    <h1>Scan the QR Code to log your entry</h1>
-    <img src='/client/QRCode.png'>
-    </center>`)
+    res.sendFile(path.join(__dirname, '../../client/index.html'))
 }
 
 exports.scanLogFunc = (req, res) => {
