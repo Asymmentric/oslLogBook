@@ -64,8 +64,8 @@ function initConn() {
 }
 
 function createWebSocketConnection() {
-    // return new WebSocket("wss://logbookosl.azurewebsites.net")
-    return new WebSocket('ws://localhost:9090')
+    return new WebSocket("wss://logbookosl.azurewebsites.net")
+    // return new WebSocket('ws://localhost:9090')
 }
 
 function sendMessage(websocket) {
