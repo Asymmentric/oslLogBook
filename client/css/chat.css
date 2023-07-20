@@ -1,13 +1,12 @@
-.chat-btn {
+ .chat-btn {
     margin: 20px;
     padding: 20px;
     border: 2px solid black;
     width: 20%;
     cursor: pointer;
 }
-.chat-container {
+/*.chat-container {
     
-    /* display: flex; */
     display: none;
     flex-direction: column;
     width: 100%;
@@ -15,13 +14,14 @@
     border: 1px solid greenyellow;
     height: 100%;
     box-sizing: border-box;
-    padding-bottom: 10px; /* Add padding at the bottom to separate from send-box */
+    padding-bottom: 10px; 
+    max-height: 500px;
   }
   
   #users-list {
     border: 1px solid yellow;
     width: 40%;
-    flex: 1; /* Use flex: 1 to fill the remaining vertical space */
+    
     box-sizing: border-box;
   }
   
@@ -36,9 +36,11 @@
   .prev-msg {
     flex: 1;
     overflow-y: auto;
+    margin-left: 40%;
   }
   
   .chat-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -49,10 +51,83 @@
     display: flex;
     justify-content: flex-end;
     padding: 10px;
+    margin-left: 40%;
   }
   
   .send-box input[type="text"] {
     flex: 1;
     margin-right: 10px;
   }
-  
+
+  .sent-msg{
+    text-align: right;
+    margin:3px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid white;
+    margin-left: 50%;
+  }
+
+  .rec-msg{
+    text-align:center;
+    margin: 3px;
+    padding: 5px;
+    background-color: rgb(140, 140, 241);
+    width: 40%;
+    border-radius: 3px;
+  }
+   */
+   .chat-container{
+    display: none;
+    border: 2px solid yellowgreen;
+    max-width: 400px;
+    
+   }
+
+   .user-box{
+    /* border: 1px solid red; */
+    width: 40%;
+    padding: 5px;
+   }
+   .user-burb{
+    height: 40px;
+    padding: 13px;
+    margin: 8px;
+    text-align: center;
+    border: 1px solid red;
+   }
+
+   .chat-content{
+    width: 100%;
+    margin-left: auto;
+   }
+   .user-name{
+    padding: 5px;
+    
+   }
+   .prev-msg{
+    border: 1px solid yellow;
+    height: 200px;
+    overflow-y: auto;
+   }
+   .send-box{
+    padding: 4px;
+   }
+   .sent-msg{
+    text-align: right;
+    margin:3px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid white;
+    margin-left: 50%;
+  }
+
+  .rec-msg{
+    text-align:center;
+    margin: 3px;
+    padding: 5px;
+    background-color: rgb(140, 140, 241);
+    width: 40%;
+    border-radius: 3px;
+  }
+

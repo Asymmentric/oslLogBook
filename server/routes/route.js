@@ -6,7 +6,7 @@ const { routeSendOTP, routeVerifyOTP, routeSendForgotPasswordLink } = require('.
 const { getLocationFunc, locationVerification } = require('./geoLocation')
 const { logoutFunc, exitScanFunc } = require('./logout')
 const { getTodayData, getAllData, getDataByDate } = require('../db/admin/getData')
-const { getActiveUsers } = require('./webSocket')
+const { getActiveUsers, getChatRoom, fetchAllUserChatRoom, fetchAllUserMessages } = require('./webSocket')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -41,15 +41,15 @@ module.exports = (app) => {
 
     //admin -get logs data
     app.get("/logs/today", verifyToken,register.todayEntries)
-    app.get("/logs/all", (req, res) => {
-        getAllData()
-            .then(result => {
-                res.send(result)
-            })
-            .catch(err => {
-                res.redirect('/')
-            })
-    })
+    // app.get("/logs/all", (req, res) => {
+    //     getAllData()
+    //         .then(result => {
+    //             res.send(result)
+    //         })
+    //         .catch(err => {
+    //             res.redirect('/')
+    //         })
+    // }) 
 
     app.get('/admin/entries/today', (req, res) => {
         getTodayData()
@@ -97,8 +97,13 @@ module.exports = (app) => {
             })
     })
 
-    app.get('/list/active/users',verifyToken,getActiveUsers)
+    app.get('/list/users/mods',verifyToken,getActiveUsers)
+    
+    app.post('/get/chatroom',verifyToken,getChatRoom)
 
+    app.post('/users/chatrooms',verifyToken,fetchAllUserChatRoom)
+
+    app.post('/users/chatrooms/allmessages',verifyToken,fetchAllUserMessages)
 
 
 }

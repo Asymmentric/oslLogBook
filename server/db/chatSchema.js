@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const chatRoomSchema = new mongoose.Schema({
     participants:[ObjectId],
-    randomStrindID:String,
+    randomStringID:String,
     createdAt:Date
 })
 
@@ -12,18 +12,22 @@ const chatRooms=mongoose.model('chatRoom',chatRoomSchema);
 const messageSchema=new mongoose.Schema({
     chatRoomId:{
         type:ObjectId,
-        ref:'chatRoom'
+        ref:'chatrooms'
     },
-    msgFrom:ObjectId,
-    msgTo:ObjectId,
+    msgFrom:String,
+    msgTo:String,
     msgBody:String,
+    visited:{
+        type:Boolean,
+        default:false
+    },
     timestamp:Date,
 })
 
 const messages=mongoose.model('messages',messageSchema)
 
 module.exports = {
-    users,
+
     chatRooms,
     messages
 }
