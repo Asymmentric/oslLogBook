@@ -8,8 +8,9 @@ const eachUser = document.getElementsByClassName('user-burb')
 const userNameDiv = document.getElementById('name-of-user')
 
 chatConnectBtn[0].addEventListener('click', initConn)
-let toUser = null
-let fromUser = null
+
+let toUser = null       // toUser is the message reciever
+let fromUser = null     //fromUser is the current user
 let chatRoomId = null
 let allUsers = []
 
@@ -48,6 +49,7 @@ function initConn() {
                 else{
                     document.getElementById(msgValue[1].fromUser).style.backgroundColor='#8fb0e6'
                     document.getElementById(msgValue[1].fromUser).style.fontWeight='bolder'
+                    //remove element
                 }
 
                 break;
@@ -60,7 +62,6 @@ function initConn() {
 
     msgSendBtn.addEventListener('click', (e) => {
         sendMessage(websocket);
-
     })
 
 
@@ -73,7 +74,7 @@ function createWebSocketConnection() {
 
 function sendMessage(websocket) {
 
-    ((toUser !== null) && (msgIp.value.trim() !== '')) ? websocket.send(JSON.stringify(['chat', { fromUser, toUser, chatRoomId, value: msgIp.value }])) : console.log('No user')
+    ((toUser !== null) && (msgIp.value.trim() !== '')) ? websocket.send(JSON.stringify(['chat', { fromUser, toUser, chatRoomId, value: msgIp.value,msgTimestamp:new Date()}])) : console.log('No user')
 
     let newMsgElem = document.createElement('div')
     newMsgElem.setAttribute('class', 'sent-msg')
@@ -92,6 +93,7 @@ function prepareToUser(e) {
     userNameDiv.innerText = userNaam
 
     //get chat room
+    
     fetch('/get/chatroom', {
         method: 'post',
         headers: {
@@ -116,7 +118,7 @@ function prepareToUser(e) {
     e.style.color = 'red'
     console.log(toUser)
     prevMsgContainer[0].innerHTML = ''
-    userNameDiv[0].innerHTML = ``
+    
 }
 
 function populateUserBox(users) {

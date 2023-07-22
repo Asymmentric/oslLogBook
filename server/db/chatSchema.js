@@ -4,10 +4,11 @@ const mongoose = require('mongoose')
 const chatRoomSchema = new mongoose.Schema({
     participants:[ObjectId],
     randomStringID:String,
-    createdAt:Date
+    createdAt:Date,
+    lastMessageAt:Date
 })
 
-const chatRooms=mongoose.model('chatRoom',chatRoomSchema);
+const chatRooms=mongoose.model('chatrooms',chatRoomSchema);
 
 const messageSchema=new mongoose.Schema({
     chatRoomId:{

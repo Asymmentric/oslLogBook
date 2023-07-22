@@ -32,13 +32,32 @@ exports.getOrCreateChatRoom = (user1, user2) => {
 
             user2ObjId = await userExistsResetPwd(user2)
             user2ObjId = user2ObjId.user[0]._id
-            let chatRoom = await chatRooms.findOne({
-                participants: {
-                    $all: [user1ObjId, user2ObjId]
-                }
-            })
 
-            if (!chatRoom) chatRoom = await this.createChatRoom(user1ObjId, user2ObjId)
+            console.log(user1ObjId,user2ObjId)
+
+            let chatRoom=''
+            
+            if(user1ObjId.equals(user2ObjId)){
+                console.log('ioioi')
+                chatRoom=await chatRooms.findOne({
+                    $expr:{
+                        $eq:[user1ObjId,user1ObjId]
+                    },
+                    $or:[
+                        {participants:[user1ObjId,user1ObjId]}
+                    ]
+                })
+            }
+            else {
+                chatRoom = await chatRooms.findOne({
+                    participants: {
+                        $all: [user1ObjId, user2ObjId]
+                    }
+                })
+            }
+            
+            console.log('this->',chatRoom)
+            if (chatRoom===null) chatRoom = await this.createChatRoom(user1ObjId, user2ObjId)
             resolve(chatRoom)
         } catch (error) {
             console.log(error)
@@ -50,17 +69,24 @@ exports.getOrCreateChatRoom = (user1, user2) => {
 exports.storeMessage = async (msg, to, from, chatRoomId, visited) => {
     try {
         let chatRoomObjId = await chatRooms.findOne({ randomStringID: chatRoomId })
+        let userMessageTime=new Date()
+
         
+
         if (chatRoomObjId !== null) {
+            
             const message = new messages({
                 chatRoomId: chatRoomObjId._id,
                 msgFrom: from,
                 msgTo: to,
                 msgBody: msg,
                 visited,
-                timestamp: new Date()
+                timestamp: userMessageTime
             })
-            message.save()
+            await message.save()
+
+            await chatRooms.updateOne({_id:chatRoomObjId._id},{$set:{lastMessageAt:userMessageTime}})
+            
         } else throw Error('Invalid Chatroom')
     } catch (err) {
         console.log(err)
@@ -86,7 +112,12 @@ exports.fetchUserChatroomsFromDB = (usn) => {
                 $project: {
                     'participantInfo.usn':1,
                     'participantInfo.name':1,
-                    randomStringID: 1
+                    randomStringID: 1,
+                    lastMessageAt:1
+                }
+            },{
+                $sort:{
+                    lastMessageAt:1
                 }
             }
 

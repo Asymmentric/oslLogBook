@@ -51,13 +51,7 @@ ws.on('request', (webSocketRequest) => {
 
 ws.on('connect', (webSocketConnection) => {
     // console.log(webSocketConnection)
-
-    allConnections.forEach(connection => {
-
-        console.log('msg->', connection.userUsn, connection.chatId)
-
-
-    });
+    
     webSocketConnection.on('message', (message) => {
         console.log(message)
 
@@ -70,21 +64,15 @@ ws.on('connect', (webSocketConnection) => {
 
         let chatRoomId = JSON.parse(message.utf8Data)[1]['chatRoomId']
 
-        sendMessageFromUserToUser(msgToReciever, reciever, sender, chatRoomId)
+        sendMessageFromUserToUser(msgToReciever, reciever, sender, chatRoomId,new Date())
 
     })
 
     webSocketConnection.on('close', () => {
-        // allConnections.forEach(connection => {
-        //     if (connection.wsConn.state === 'closed') {
-        //         //set status offline
-        //         console.log(connection.userUsn,connection.chatId, ' OUT ')
-
-        //     }
-        // })
+        
         allConnections = allConnections.filter(connection => {
             if (connection.wsConn.state === 'closed') {
-                //set status offline
+                //{pending task} set status offline
                 console.log(connection.userUsn, connection.chatId, ' OUT ')
 
             }
