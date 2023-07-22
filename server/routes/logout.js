@@ -4,6 +4,8 @@ const { getLastLogin } = require("../db/scanAndLog/livePage")
 exports.logoutFunc = (req, res) => {
     res.clearCookie('oslLogAuthUSN')
     res.clearCookie('oslLogUser')
+    res.clearCookie('connect.sid')
+    req.session.destroy()
     res.redirect('/')
 }
 

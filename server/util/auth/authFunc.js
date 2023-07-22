@@ -8,7 +8,7 @@ const registerFunc = async (req, res) => {
 
     let payLoad = { email: req.body.email, usn: req.body.usn }
 
-    console.log('Payload', payLoad)
+    // console.log('Payload', payLoad)
 
     let queryParams = req.headers.referer ? getQueryParams(req.headers.referer) : ''
 
@@ -102,7 +102,7 @@ const verifyToken = async (req, res, next) => {
 
         jwt.verify(token, process.env.JWT_SECRET_TOKEN, async (err, result) => {
 
-            err ? console.log('Error->', err) : console.log('jwt result->', result)
+            // err ? console.log('Error->', err) : console.log('jwt result->', result)
 
             if (!err) {
                 try {

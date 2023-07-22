@@ -95,7 +95,7 @@ exports.fetchUserChatroomsFromDB = (usn) => {
                 result.forEach(e => {
                     console.log(e)
                 });
-                console.log(`All chat rooms` + result[0])
+                // console.log(`All chat rooms` + result[0])
                 resolve(result);
             })
             .catch(err => {

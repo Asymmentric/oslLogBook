@@ -29,7 +29,7 @@ exports.getChatRoom = (req, res) => {
     if (sender && reciever) {
         getOrCreateChatRoom(sender, reciever)
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 res.send({ err: false, chatRoomId: result.randomStringID })
             })
             .catch(err => {
@@ -79,7 +79,7 @@ exports.fetchAllUserMessages=(req,res)=>{
     if(chatRoomId){
         fetchAllMessagesFromChatRoom(chatRoomId)
         .then(allMessages=>{
-            console.log('---',allMessages)
+            // console.log('---',allMessages)
             res.send({err:false,msg:allMessages})
         })
         .catch(err=>{

@@ -15,6 +15,7 @@ exports.homeFunc = (req, res) => {
     console.log(req.headers['user-agent'])
     console.log(req.ip)
     console.log(req.url)
+    console.log(req.session)
     // res.send({Status:'OK',Response:200,Message:"Scan the QR Code to log your entry"})
     res.sendFile(path.join(__dirname, '../../client/index.html'))
 }
