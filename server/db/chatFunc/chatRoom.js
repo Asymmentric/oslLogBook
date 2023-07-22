@@ -33,12 +33,12 @@ exports.getOrCreateChatRoom = (user1, user2) => {
             user2ObjId = await userExistsResetPwd(user2)
             user2ObjId = user2ObjId.user[0]._id
 
-            console.log(user1ObjId,user2ObjId)
+            // console.log(user1ObjId,user2ObjId)
 
             let chatRoom=''
             
             if(user1ObjId.equals(user2ObjId)){
-                console.log('ioioi')
+                // console.log('ioioi')
                 chatRoom=await chatRooms.findOne({
                     $expr:{
                         $eq:[user1ObjId,user1ObjId]
@@ -56,7 +56,7 @@ exports.getOrCreateChatRoom = (user1, user2) => {
                 })
             }
             
-            console.log('this->',chatRoom)
+            // console.log('this->',chatRoom)
             if (chatRoom===null) chatRoom = await this.createChatRoom(user1ObjId, user2ObjId)
             resolve(chatRoom)
         } catch (error) {
@@ -117,15 +117,15 @@ exports.fetchUserChatroomsFromDB = (usn) => {
                 }
             },{
                 $sort:{
-                    lastMessageAt:1
+                    lastMessageAt:-1
                 }
             }
 
         ])
             .then(result => {
-                result.forEach(e => {
-                    console.log(e)
-                });
+                // result.forEach(e => {
+                //     console.log(e)
+                // });
                 // console.log(`All chat rooms` + result[0])
                 resolve(result);
             })
@@ -142,7 +142,7 @@ exports.fetchAllMessagesFromChatRoom=(chatRoomId)=>{
         chatRooms.findOne({ randomStringID: chatRoomId })
         .then(result=>{
             console.log(result._id)
-            return messages.find({chatRoomId:result._id},{_id:0,_v:0}).sort({timestamp:1})
+            return messages.find({chatRoomId:result._id},{_id:0,_v:0}).sort({timestamp:-1}).limit(10)
         })
         .then(allMessages=>{
             resolve(allMessages)

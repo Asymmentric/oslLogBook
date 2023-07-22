@@ -15,14 +15,18 @@ let chatRoomId = null
 let allUsers = []
 
 function initConn() {
-
+    userBox.innerHTML = ''
     getAllActiveUsers()
 
     chatContainer.style.display = 'flex'
 
     let websocket = createWebSocketConnection()
 
-    window.addEventListener('beforeunload',()=>{
+    msgIp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') msgSendBtn.click()
+    })
+
+    window.addEventListener('beforeunload', () => {
         websocket.close()
     })
 
@@ -46,10 +50,10 @@ function initConn() {
                     prevMsgContainer[0].append(newMsgElem)
                     scrollToBottom(prevMsgContainer[0])
                 }
-                else{
-                    document.getElementById(msgValue[1].fromUser).style.backgroundColor='#8fb0e6'
-                    document.getElementById(msgValue[1].fromUser).style.fontWeight='bolder'
-                    //remove element
+                else {
+                    document.getElementById(msgValue[1].fromUser).style.backgroundColor = '#8fb0e6'
+                    document.getElementById(msgValue[1].fromUser).style.fontWeight = 'bolder'
+                    userBox.prepend(document.getElementById(msgValue[1].fromUser))
                 }
 
                 break;
@@ -61,6 +65,8 @@ function initConn() {
     })
 
     msgSendBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+
         sendMessage(websocket);
     })
 
@@ -68,32 +74,38 @@ function initConn() {
 }
 
 function createWebSocketConnection() {
+    if (fromUser) websocket.close()
     return new WebSocket("wss://logbookosl.azurewebsites.net")
+
     // return new WebSocket('ws://localhost:9090')
 }
 
 function sendMessage(websocket) {
 
-    ((toUser !== null) && (msgIp.value.trim() !== '')) ? websocket.send(JSON.stringify(['chat', { fromUser, toUser, chatRoomId, value: msgIp.value,msgTimestamp:new Date()}])) : console.log('No user')
+    if ((toUser !== null) && (msgIp.value.trim() !== '')) {
+        websocket.send(JSON.stringify(['chat', { fromUser, toUser, chatRoomId, value: msgIp.value, msgTimestamp: new Date() }]))
+        userBox.prepend(document.getElementById(toUser))
+        let newMsgElem = document.createElement('div')
+        newMsgElem.setAttribute('class', 'sent-msg')
+        newMsgElem.innerText = msgIp.value
 
-    let newMsgElem = document.createElement('div')
-    newMsgElem.setAttribute('class', 'sent-msg')
-    newMsgElem.innerText = msgIp.value
-
-    msgIp.value.trim() !== '' ? prevMsgContainer[0].append(newMsgElem) : 1
-    scrollToBottom(prevMsgContainer[0])
-    msgIp.value = ''
+        msgIp.value.trim() !== '' ? prevMsgContainer[0].append(newMsgElem) : 1
+        scrollToBottom(prevMsgContainer[0])
+        msgIp.value = ''
+    }
+    else console.log('No user')
 
 }
-function prepareToUser(e) {
 
+function prepareToUser(e) {
+    msgIp.value = ''
     toUser = e.id;
     console.log(e.innerText)
     let userNaam = e.innerText
     userNameDiv.innerText = userNaam
 
     //get chat room
-    
+
     fetch('/get/chatroom', {
         method: 'post',
         headers: {
@@ -113,24 +125,24 @@ function prepareToUser(e) {
         element.style.color = 'white'
 
     }
-    e.style.backgroundColor='transparent'
-    e.style.fontWeight='normal'
+    e.style.backgroundColor = 'transparent'
+    e.style.fontWeight = 'normal'
     e.style.color = 'red'
     console.log(toUser)
     prevMsgContainer[0].innerHTML = ''
-    
+    msgIp.focus()
+
+
 }
 
-function populateUserBox(users) {
-
-    users.forEach(user => {
-        let userUI = document.createElement('div')
-        userUI.className = 'user-burb'
-        userUI.id = user.usnOfUser
-        userUI.setAttribute('onclick', 'prepareToUser(this)')
-        userUI.innerHTML = `<p class="user-name mod">${user.nameOfUser}</p>`
-        userBox.append(userUI)
-    });
+function populateUserBox(user) {
+    // userBox.innerHTML=''
+    let userUI = document.createElement('div')
+    userUI.className = 'user-burb'
+    userUI.id = user.usnOfUser
+    userUI.setAttribute('onclick', 'prepareToUser(this)')
+    userUI.innerHTML = `<p class="user-name mod">${user.nameOfUser}</p>`
+    userBox.append(userUI)
 
 }
 
@@ -139,8 +151,13 @@ function getAllActiveUsers() {
         .then(response => response.json())
         .then(data => {
             // console.log(data.msg)
+            data.msg.forEach(user => {
+                populateUserBox(user)
+            });
             allUsers = data.msg
+            console.log(data.msg)
             return getAllChatsForUser()
+
         })
         .catch(err => {
             return null
@@ -158,11 +175,14 @@ function getAllChatsForUser() {
         .then(data => {
             data.chatRooms.forEach(chatRoom => {
                 console.log(chatRoom.usnOfUser)
-                if (!isUsnAlreadyPresent(chatRoom.usnOfUser)) allUsers.push(chatRoom)
+                if (!isUsnAlreadyPresent(chatRoom.usnOfUser)) {
+                    populateUserBox(chatRoom)
+                    allUsers.push(chatRoom)
+                }
 
             });
             console.log(12312321, allUsers)
-            populateUserBox(allUsers)
+            // populateUserBox(allUsers)
         })
 }
 
@@ -197,7 +217,7 @@ function getAllUserMessages(chatRoomId) {
     })
         .then(response => response.json())
         .then(data => {
-
+        
             data.msg.forEach(message => {
                 if (message.msgFrom === fromUser) {
                     console.log(message.msgTo, toUser)
@@ -205,19 +225,18 @@ function getAllUserMessages(chatRoomId) {
                     newMsgElem.setAttribute('class', 'sent-msg')
                     newMsgElem.innerText = message.msgBody
 
-                    prevMsgContainer[0].append(newMsgElem)
-                    if(message.visited===true) scrollToBottom(prevMsgContainer[0])
+                    prevMsgContainer[0].prepend(newMsgElem)
+                    if (message.visited === true) scrollToBottom(prevMsgContainer[0])
                 } else {
                     let newMsgElem = document.createElement('div')
                     newMsgElem.setAttribute('class', 'rec-msg')
                     newMsgElem.innerText = message.msgBody
 
-                    prevMsgContainer[0].append(newMsgElem)
-                    if(message.visited===true) scrollToBottom(prevMsgContainer[0])
+                    prevMsgContainer[0].prepend(newMsgElem)
+                    if (message.visited === true) scrollToBottom(prevMsgContainer[0])
                 }
-
-
             });
+            
         })
 }
 

@@ -51,25 +51,29 @@ ws.on('request', (webSocketRequest) => {
 
 ws.on('connect', (webSocketConnection) => {
     // console.log(webSocketConnection)
-    
+
     webSocketConnection.on('message', (message) => {
         console.log(message)
+        let parsedMessage = messageParser(message)
+        if (parsedMessage) {
+            let reciever = parsedMessage.reciever
+            let msgToReciever = parsedMessage.msgToReciever
+            let sender = parsedMessage.sender
+            allConnections.forEach(connection => {
+                if (connection.chatId === sender) sender = connection.userUsn
+            });
 
-        let reciever = JSON.parse(message.utf8Data)[1]['toUser']
-        let msgToReciever = JSON.parse(message.utf8Data)[1]['value']
-        let sender = JSON.parse(message.utf8Data)[1]['fromUser']
-        allConnections.forEach(connection => {
-            if (connection.chatId === sender) sender = connection.userUsn
-        });
+            let chatRoomId = JSON.parse(message.utf8Data)[1]['chatRoomId']
 
-        let chatRoomId = JSON.parse(message.utf8Data)[1]['chatRoomId']
 
-        sendMessageFromUserToUser(msgToReciever, reciever, sender, chatRoomId,new Date())
+            sendMessageFromUserToUser(msgToReciever, reciever, sender, chatRoomId, new Date())
+        }
+
 
     })
 
     webSocketConnection.on('close', () => {
-        
+
         allConnections = allConnections.filter(connection => {
             if (connection.wsConn.state === 'closed') {
                 //{pending task} set status offline
@@ -105,5 +109,18 @@ function sendMessageFromUserToUser(message, reciever, sender, chatRoomId) {
     storeMessage(message, reciever, sender, chatRoomId, sent)
 }
 
+function messageParser(incomingMessage) {
+    try {
+        let reciever        = JSON.parse(incomingMessage.utf8Data)[1]['toUser']
+        let msgToReciever   = JSON.parse(incomingMessage.utf8Data)[1]['value']
+        let sender          = JSON.parse(incomingMessage.utf8Data)[1]['fromUser']
+        let chatRoomId      = JSON.parse(incomingMessage.utf8Data)[1]['chatRoomId']
 
+        return { reciever, msgToReciever, sender, chatRoomId }
+        
+    } catch (err) {
+        console.log(err)
+        return false
+    }
+}
 module.exports = ws
