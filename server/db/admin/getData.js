@@ -84,6 +84,7 @@ exports.getAllData = (userType) => {
                 name: 1,
                 usn: 1,
                 logsData: { time: 1 },
+                activityStatus:1
                 
 
             }

@@ -1,5 +1,6 @@
 const { chatRooms, messages } = require("../chatSchema")
 const { userExistsResetPwd } = require("../userFunc/userFunc")
+const { users } = require("../userSchema")
 
 
 exports.createChatRoom = (user1, user2) => {
@@ -35,16 +36,16 @@ exports.getOrCreateChatRoom = (user1, user2) => {
 
             // console.log(user1ObjId,user2ObjId)
 
-            let chatRoom=''
-            
-            if(user1ObjId.equals(user2ObjId)){
+            let chatRoom = ''
+
+            if (user1ObjId.equals(user2ObjId)) {
                 // console.log('ioioi')
-                chatRoom=await chatRooms.findOne({
-                    $expr:{
-                        $eq:[user1ObjId,user1ObjId]
+                chatRoom = await chatRooms.findOne({
+                    $expr: {
+                        $eq: [user1ObjId, user1ObjId]
                     },
-                    $or:[
-                        {participants:[user1ObjId,user1ObjId]}
+                    $or: [
+                        { participants: [user1ObjId, user1ObjId] }
                     ]
                 })
             }
@@ -55,9 +56,9 @@ exports.getOrCreateChatRoom = (user1, user2) => {
                     }
                 })
             }
-            
+
             // console.log('this->',chatRoom)
-            if (chatRoom===null) chatRoom = await this.createChatRoom(user1ObjId, user2ObjId)
+            if (chatRoom === null) chatRoom = await this.createChatRoom(user1ObjId, user2ObjId)
             resolve(chatRoom)
         } catch (error) {
             console.log(error)
@@ -69,12 +70,12 @@ exports.getOrCreateChatRoom = (user1, user2) => {
 exports.storeMessage = async (msg, to, from, chatRoomId, visited) => {
     try {
         let chatRoomObjId = await chatRooms.findOne({ randomStringID: chatRoomId })
-        let userMessageTime=new Date()
+        let userMessageTime = new Date()
 
-        
+
 
         if (chatRoomObjId !== null) {
-            
+
             const message = new messages({
                 chatRoomId: chatRoomObjId._id,
                 msgFrom: from,
@@ -85,8 +86,8 @@ exports.storeMessage = async (msg, to, from, chatRoomId, visited) => {
             })
             await message.save()
 
-            await chatRooms.updateOne({_id:chatRoomObjId._id},{$set:{lastMessageAt:userMessageTime}})
-            
+            await chatRooms.updateOne({ _id: chatRoomObjId._id }, { $set: { lastMessageAt: userMessageTime } })
+
         } else throw Error('Invalid Chatroom')
     } catch (err) {
         console.log(err)
@@ -110,14 +111,15 @@ exports.fetchUserChatroomsFromDB = (usn) => {
                 }
             }, {
                 $project: {
-                    'participantInfo.usn':1,
-                    'participantInfo.name':1,
+                    'participantInfo.usn': 1,
+                    'participantInfo.name': 1,
+                    'participantInfo.activityStatus':1,
                     randomStringID: 1,
-                    lastMessageAt:1
+                    lastMessageAt: 1
                 }
-            },{
-                $sort:{
-                    lastMessageAt:-1
+            }, {
+                $sort: {
+                    lastMessageAt: -1
                 }
             }
 
@@ -137,19 +139,42 @@ exports.fetchUserChatroomsFromDB = (usn) => {
 
 }
 
-exports.fetchAllMessagesFromChatRoom=(chatRoomId)=>{
+exports.fetchAllMessagesFromChatRoom = (chatRoomId, i) => {
     return new Promise((resolve, reject) => {
+        console.log(123456, '->', 10 * i)
         chatRooms.findOne({ randomStringID: chatRoomId })
+            .then(result => {
+                console.log(result._id)
+                return messages.find({ chatRoomId: result._id }, { _id: 0, _v: 0 }).sort({ timestamp: -1 }).skip(10 * i).limit(10)
+            })
+            .then(allMessages => {
+                resolve(allMessages)
+            })
+            .catch(err => {
+                console.log(err)
+                reject({ err: true, msg: 'Can not fetch messages' })
+            })
+    })
+}
+
+exports.setUserActivityStatus=(usn,status)=>{
+    console.log(usn,status)
+    return new Promise((resolve, reject) => {
+        users.findOneAndUpdate({
+            usn
+        },{
+            $set:{
+                activityStatus:status
+            }
+        }
+        )
         .then(result=>{
-            console.log(result._id)
-            return messages.find({chatRoomId:result._id},{_id:0,_v:0}).sort({timestamp:-1}).limit(10)
-        })
-        .then(allMessages=>{
-            resolve(allMessages)
+            console.log(`${usn}=>${status}`)
+            resolve(true)
         })
         .catch(err=>{
             console.log(err)
-            reject({err:true,msg:'Can not fetch messages'})
+            reject(false)
         })
     })
 }

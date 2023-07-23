@@ -1,5 +1,5 @@
 
-const { storeMessage } = require('../db/chatFunc/chatRoom')
+const { storeMessage, setUserActivityStatus } = require('../db/chatFunc/chatRoom')
 const { presence } = require('../server')
 const { generateOTP } = require('../services/mailer')
 
@@ -15,7 +15,7 @@ ws.mount({
     autoAcceptConnections: false
 })
 
-ws.on('request', (webSocketRequest) => {
+ws.on('request',  (webSocketRequest) => {
     console.log('origin->', webSocketRequest.origin);
 
     let newUserId = getUserFromCookie(webSocketRequest.cookies)
@@ -24,12 +24,14 @@ ws.on('request', (webSocketRequest) => {
     if (!newUserId) return webSocketRequest.reject()
     else {
         let chatId = generateOTP()
-        webSocketRequest.on('requestAccepted', (webSocketConnection) => {
+        webSocketRequest.on('requestAccepted',async(webSocketConnection) => {
             console.log(`${newUserId} ${chatId} -> Connected and init`)
 
-            //{pending}set status as online
-
+            //{pending}set status as online    
+            let actii=await setUserActivityStatus(newUserId,true)
+            console.log(actii)
             webSocketConnection.send(JSON.stringify(['init', { sender: newUserId, connected: true, id: 1, msg: 'Hey' }]))
+            
         })
         let connDetails = {
             userUsn: newUserId,
@@ -63,10 +65,11 @@ ws.on('connect', (webSocketConnection) => {
                 if (connection.chatId === sender) sender = connection.userUsn
             });
 
-            let chatRoomId = JSON.parse(message.utf8Data)[1]['chatRoomId']
+            let chatRoomId = parsedMessage.chatRoomId
+            let typeOfMsg = parsedMessage.typeOfMsg
 
 
-            sendMessageFromUserToUser(msgToReciever, reciever, sender, chatRoomId, new Date())
+            sendMessageFromUserToUser(typeOfMsg, msgToReciever, reciever, sender, chatRoomId, new Date())
         }
 
 
@@ -74,11 +77,12 @@ ws.on('connect', (webSocketConnection) => {
 
     webSocketConnection.on('close', () => {
 
-        allConnections = allConnections.filter(connection => {
+        allConnections = allConnections.filter(async connection => {
             if (connection.wsConn.state === 'closed') {
                 //{pending task} set status offline
-                console.log(connection.userUsn, connection.chatId, ' OUT ')
-
+                let stss=await setUserActivityStatus(connection.userUsn,false)
+                console.log(stss,connection.userUsn, connection.chatId, ' OUT ')
+                
             }
             return connection.wsConn.state !== 'closed'
         })
@@ -95,29 +99,49 @@ function getUserFromCookie(cookies) {
     return userUsn
 
 }
-function sendMessageFromUserToUser(message, reciever, sender, chatRoomId) {
-    let sent = false
-    allConnections.forEach(connection => {
+function sendMessageFromUserToUser(typeOfMsg, message, reciever, sender, chatRoomId) {
+    switch (typeOfMsg.toLowerCase()) {
+        case 'chat':
+            let sent = false
+            allConnections.forEach(connection => {
 
-        console.log(connection.userUsn, connection.chatId)
+                console.log(connection.userUsn, connection.chatId)
 
-        if ((reciever === connection.userUsn || (reciever === connection.chatId))) {
-            sent = true
-            connection.wsConn.send(JSON.stringify(['chat', { fromUser: sender, value: message }]))
-        }
-    });
-    storeMessage(message, reciever, sender, chatRoomId, sent)
+                if ((reciever === connection.userUsn || (reciever === connection.chatId))) {
+                    sent = true
+                    connection.wsConn.send(JSON.stringify(['chat', { fromUser: sender, value: message }]))
+                }
+            });
+            storeMessage(message, reciever, sender, chatRoomId, sent)
+            break;
+        case 'typing':
+            allConnections.forEach(connection => {
+
+                // console.log(connection.userUsn, connection.chatId)
+
+                if ((reciever === connection.userUsn || (reciever === connection.chatId))) {
+
+                    connection.wsConn.send(JSON.stringify(['typing', { fromUser: sender, value: true }]))
+                }
+            });
+            break;
+
+        default:
+            break;
+    }
+
 }
 
 function messageParser(incomingMessage) {
     try {
-        let reciever        = JSON.parse(incomingMessage.utf8Data)[1]['toUser']
-        let msgToReciever   = JSON.parse(incomingMessage.utf8Data)[1]['value']
-        let sender          = JSON.parse(incomingMessage.utf8Data)[1]['fromUser']
-        let chatRoomId      = JSON.parse(incomingMessage.utf8Data)[1]['chatRoomId']
+        let reciever = JSON.parse(incomingMessage.utf8Data)[1]['toUser']
+        let msgToReciever = JSON.parse(incomingMessage.utf8Data)[1]['value']
+        let sender = JSON.parse(incomingMessage.utf8Data)[1]['fromUser']
+        let chatRoomId = JSON.parse(incomingMessage.utf8Data)[1]['chatRoomId']
+        let typeOfMsg = JSON.parse(incomingMessage.utf8Data)[0]
 
-        return { reciever, msgToReciever, sender, chatRoomId }
-        
+        return { typeOfMsg, reciever, msgToReciever, sender, chatRoomId }
+
     } catch (err) {
         console.log(err)
         return false

@@ -21,14 +21,18 @@ const userSchema = new mongoose.Schema({
     lastLogin: {
         type: Date
     },
-    lastOut:{
-        type:Date
+    lastOut: {
+        type: Date
     },
-    currentLogStatus:{
-        type:Boolean,
-        default:1
+    currentLogStatus: {
+        type: Boolean,
+        default: 1
     },
-    logsData: [logSchema]
+    logsData: [logSchema],
+    activityStatus: {
+        type: Boolean,
+        default: false
+    }
 
 })
 
