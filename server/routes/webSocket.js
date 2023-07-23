@@ -7,7 +7,7 @@ exports.getActiveUsers = (req, res) => {
     let encryptedUsn = ''
     getAllData()
         .then(allUsers => {
-            console.log(allUsers)
+            // console.log(allUsers)
             allUsers.forEach(user => {
                 allUsersList.push({
                     nameOfUser: user.name,
@@ -54,7 +54,7 @@ exports.fetchAllUserChatRoom = (req, res) => {
             let toUserActivityStatus=''
             chatRooms.forEach(chatRoom => {
 
-                console.log(1, chatRoom.participantInfo[0], 2, chatRoom.participantInfo[1])
+                // console.log(1, chatRoom.participantInfo[0], 2, chatRoom.participantInfo[1])
                 
                 if (chatRoom.participantInfo[0] && chatRoom.participantInfo[1]) {
                     toUser = chatRoom.participantInfo[1].usn === userUsn ? chatRoom.participantInfo[0].usn : chatRoom.participantInfo[1].usn

@@ -42,7 +42,7 @@ function initConn() {
         switch (msgValue[0]) {
             case 'init':
                 fromUser = msgValue[1].sender
-                
+
                 break;
 
             case 'chat':
@@ -99,6 +99,14 @@ function initConn() {
 
                 break;
 
+            case 'status':
+                // console.log(`${msgValue[1].fromUser}-active-status`)
+                // console.log(`active-status ${msgValue[1].message ? 'online' : 'offline'}`)
+                setTimeout(() => {
+                    
+                    document.getElementById(`${msgValue[1].fromUser}-activity-status`).setAttribute('class', `active-status ${msgValue[1].value ? 'online' : 'offline'}`)
+                }, 2000);
+                break;
             default:
                 break;
         }
@@ -115,9 +123,9 @@ function initConn() {
 
 function createWebSocketConnection() {
     if (fromUser) websocket.close()
-    return new WebSocket("wss://logbookosl.azurewebsites.net")
+    // return new WebSocket("wss://logbookosl.azurewebsites.net")
 
-    // return new WebSocket('ws://localhost:9090')
+    return new WebSocket('ws://localhost:9090')
 }
 
 function sendMessage(websocket, typeOfMsg) {
@@ -169,7 +177,7 @@ function prepareToUser(e) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data.chatRoomId)
+            // console.log(data.chatRoomId)
             chatRoomId = data.chatRoomId
             return getAllUserMessages(chatRoomId, 0)
         })
@@ -182,7 +190,7 @@ function prepareToUser(e) {
     e.style.backgroundColor = 'transparent'
     e.style.fontWeight = 'normal'
     e.style.color = 'red'
-    console.log(toUser)
+    // console.log(toUser)
     prevMsgContainer[0].innerHTML = ''
     msgIp.focus()
 
@@ -203,7 +211,7 @@ function populateUserBox(user) {
             </div>
         </div>
         <div>
-                <p class="active-status ${user.userActiveStatus? 'online':'offline'}"></p>
+                <p id="${user.usnOfUser}-activity-status" class="active-status ${user.userActiveStatus ? 'online' : 'offline'}"></p>
         </div>
     </div>
     `

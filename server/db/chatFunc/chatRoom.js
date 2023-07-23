@@ -158,7 +158,7 @@ exports.fetchAllMessagesFromChatRoom = (chatRoomId, i) => {
 }
 
 exports.setUserActivityStatus=(usn,status)=>{
-    console.log(usn,status)
+    
     return new Promise((resolve, reject) => {
         users.findOneAndUpdate({
             usn
