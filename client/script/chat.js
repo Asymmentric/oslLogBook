@@ -6,6 +6,7 @@ const chatContainer = document.getElementById('chat-cont')
 const prevMsgContainer = document.getElementsByClassName('prev-msg')
 const eachUser = document.getElementsByClassName('user-burb')
 const userNameDiv = document.getElementById('name-of-user')
+const chatContent=document.getElementsByClassName('chat-content')
 
 chatConnectBtn[0].addEventListener('click', initConn)
 
@@ -13,15 +14,29 @@ let toUser = null       // toUser is the message reciever
 let fromUser = null     //fromUser is the current user
 let chatRoomId = null
 let allUsers = []
+let chatState=false
+let websocket =''
 
 function initConn() {
     userBox.innerHTML = ''
     getAllActiveUsers()
 
-    chatContainer.style.display = 'flex'
+    
 
-    let websocket = createWebSocketConnection()
+    
 
+    if(!chatState){
+        chatContainer.style.display = 'flex'
+        websocket=createWebSocketConnection()
+        chatState=true
+    }
+    else{
+        chatContainer.style.display = 'none'
+        chatContent[0].style.display='none'
+        chatState=false
+        // console.log(websocket)
+        websocket.close()
+    }
     msgIp.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') msgSendBtn.click()
         else {
@@ -105,7 +120,7 @@ function initConn() {
                 setTimeout(() => {
                     
                     document.getElementById(`${msgValue[1].fromUser}-activity-status`).setAttribute('class', `active-status ${msgValue[1].value ? 'online' : 'offline'}`)
-                }, 2000);
+                }, 900);
                 break;
             default:
                 break;
@@ -122,10 +137,8 @@ function initConn() {
 }
 
 function createWebSocketConnection() {
-    if (fromUser) websocket.close()
-    return new WebSocket("wss://logbookosl.azurewebsites.net")
 
-    // return new WebSocket('ws://localhost:9090')
+    return new WebSocket('ws://localhost:9090')
 }
 
 function sendMessage(websocket, typeOfMsg) {
@@ -163,6 +176,8 @@ function prepareToUser(e) {
     msgIp.value = ''
     toUser = e.id;
     // console.log(e.innerText)
+
+    chatContent[0].style.display='block'
     let userNaam = e.innerText
     userNameDiv.innerText = userNaam
 
