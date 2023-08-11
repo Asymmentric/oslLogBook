@@ -1,9 +1,13 @@
+const { setUserActivityStatus } = require("../db/chatFunc/chatRoom")
 const { exitLog } = require("../db/scanAndLog/exitTime")
 const { getLastLogin } = require("../db/scanAndLog/livePage")
 
-exports.logoutFunc = (req, res) => {
+exports.logoutFunc = async (req, res) => {
     res.clearCookie('oslLogAuthUSN')
     res.clearCookie('oslLogUser')
+    res.clearCookie('connect.sid')
+    await setUserActivityStatus(req.session.userUsn)
+    req.session.destroy()
     res.redirect('/')
 }
 

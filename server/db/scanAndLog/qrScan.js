@@ -47,7 +47,7 @@ exports.scanLog = async function scanLog(usn, ip, useragent, userDateTime, newUs
             }
         )
             .then((msg) => {
-                // console.log('0', msg)
+                console.log('0', msg)
                 resolve({ code: 200, msg: 'Logged Successfully' })
             })
             .catch((err) => {

@@ -2,12 +2,10 @@ const mongoose=require('mongoose')
 
 const logSchema=new mongoose.Schema({
     time:{
-        type:Date,
-        default:Date.now()
+        type:Date
     },
     outTime:{
-        type:Date,
-        default:Date.now()
+        type:Date
     },
     useragent:String,
     ip:String
