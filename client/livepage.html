@@ -19,11 +19,19 @@
         <div id="exit-container">
             <p class="exitLog">Log your Exit</p>
         </div>
+        <button onclick="redirectToGamePage()">Play Fighting Game</button>
 
         <a href="/logout"><p class="logout" id="logout">Logout</p></a>
         <p class="text">DIGITAL CLOCK with Vue.js by <a href="https://codepen.io/gau">Toshiyuki TAKAHASHI</a> </p>
 
     </div>
 <script src = "/client/script/livepage.js"></script>
+
+<script>
+    function redirectToGamePage() {
+        // Replace "game.html" with the filename or path of your game.html page
+        window.location.href = "games.html";
+    }
+</script>
 </body>
 </html>
