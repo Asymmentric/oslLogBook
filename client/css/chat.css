@@ -1,0 +1,93 @@
+ .chat-btn {
+   margin: 20px;
+   padding: 20px;
+   border: 2px solid black;
+   width: 20%;
+   cursor: pointer;
+ }
+
+ .chat-container {
+   display: none;
+   border: 2px solid yellowgreen;
+   max-width: 400px;
+
+ }
+
+ .user-box {
+   /* border: 1px solid red; */
+   width: 40%;
+   padding: 5px;
+ }
+
+ .user-burb {
+   /* display: flex; */
+   height: 50px;
+   padding-top: 13px;
+   padding-right: 43px;
+   padding-bottom: 13px;
+   padding-left: 10px;
+
+   margin: 8px;
+   text-align: left;
+   border: 1px solid red;
+ }
+
+ .userUI-name-container {
+   display: flex
+ }
+
+ .userUI-container div {
+   width: 100px;
+ }
+
+ .active-status {
+   width: 20px;
+   height: 14px;
+  color:gray;
+   background-color: gray;
+   border-radius: 40px;
+   margin: 6px;
+ }
+ .online{
+  background-color: green;
+ }
+
+ .chat-content {
+  display: none;
+   width: 100%;
+   margin-left: auto;
+ }
+
+ .user-name {
+   padding: 5px;
+
+ }
+
+ .prev-msg {
+   border: 1px solid yellow;
+   height: 200px;
+   overflow-y: auto;
+ }
+
+ .send-box {
+  
+   padding: 4px;
+ }
+
+ .sent-msg {
+   text-align: right;
+   margin: 3px;
+   padding: 5px;
+   border-radius: 3px;
+   border: 1px solid white;
+   margin-left: 50%;
+ }
+
+ .rec-msg {
+   text-align: center;
+   margin: 3px;
+   padding: 5px;
+   background-color: rgb(140, 140, 241);
+   width: 40%;
+   border-radius: 3px;
+ }

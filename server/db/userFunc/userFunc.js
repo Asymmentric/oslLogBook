@@ -35,10 +35,10 @@ async function loginCheck(userId, password) {
     const user = await users.find({ $or: [{ email: userId }, { usn: userId }] })
     return new Promise((resolve, reject) => {
         if (user.length !== 0) {
-            console.log(user)
+            // console.log(user)
             cryptPwd.decryptPwd(password, user[0].password)
                 .then(res => {
-                    console.log(res)
+                    // console.log(res)
                     if (res) {
                         console.log('pass correct')
                         resolve({ usn: user[0].usn, email: user[0].email, name: user[0].name })

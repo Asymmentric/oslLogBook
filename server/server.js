@@ -5,11 +5,15 @@ const cookieParser=require('cookie-parser')
 const dotenv=require('dotenv').config()
 const session=require('express-session')
 const url=require('node:url')
+const http=require('http')
 
 const routes=require('./routes/route')
 const handler=require('./util/handler/notFound')
 
 const favicon = require('serve-favicon')
+
+const presence=http.createServer(app)
+
 app.use(favicon(path.join(__dirname, '../client/favicon.ico')))
 
 const port=process.env.PORT || 9090
@@ -46,11 +50,11 @@ app.use('/client',express.static(path.join(__dirname,'../client')))
 
 app.use('*',handler.notFound)
 
-app.listen(port,()=>{
+presence.listen(port,()=>{
     
     console.log(`Running on ${port}...`)
 })
 
 
 
-module.exports=app 
+module.exports={app,presence} 
