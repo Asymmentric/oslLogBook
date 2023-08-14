@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+
+body {
+  
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'VT323', monospace;
+   background-image:url( "https://wallpapercave.com/wp/wp4063163.jpg");
+   background-repeat: no-repeat;
+      background-size: cover; 
+      background-position: center center; 
+}
+
+.menu {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#p1 {
+  width:100px;
+  height:100px;
+}
+
+.p1Info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 300px;
+/*   background: red; */
+}
+
+#p1Name {
+  font-size: 30px;
+  color: crimson;
+}
+
+#p1Health {
+  font-size: 50px;
+  color: aliceblue;
+}
+
+#p2{
+  width:100px;
+  height:100px;
+}
+
+
+.p2Info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 300px;
+/*   background: red; */
+}
+
+#p2Name {
+  font-size: 30px;
+  color :crimson
+}
+
+#p2Health {
+  font-size: 50px;
+  color: aliceblue;
+}
+
+.playerControls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+ 
+}
+
+.AttackDiv{
+  display: flex;
+  align-items:center;
+  justify-content: space-around;
+  height: 40px;
+  width: 100px;
+/*   background: blue; */
+}
+
+.HealDiv {
+  display: flex;
+  align-items:center;
+  justify-content: space-around;
+  height: 40px;
+  width: 100px;
+/*   background: yellow; */
+}
+
+#attack {
+  height: 30px;
+  width: 60px;
+  border-radius: 50px;
+  border:none;
+  background: #ff0101;
+  outline: none;
+
+}
+
+#heal {
+  height: 30px;
+  width: 60px;
+  border-radius: 50px;
+  border:none;
+  background: #d5db39;
+  outline: none;
+
+}
+
+#play {
+  height: 50px;
+  width: 120px;
+  border-radius: 20px;
+/*   border:none; */
+  background: #59f259;
+  outline: none;
+  color: white;
+}
+
+#result {
+  font-size: 50px;
+  color : #3dff3d;
+}
+
+#reset {
+  margin-top: 20px;
+  height: 50px;
+  width: 100px;
+  border-radius: 20px;
+/*   border:none; */
+  background: #2e20ef;
+  outline: none;
+  color: white;
+}
+
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height:150px;
+  width: 300px;
+}
+#result {
+  color: blueviolet;
+}
+.AttackDiv{
+  color: goldenrod;
+}
+.HealDiv{
+  color:darkred;
+}

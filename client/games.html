@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Selection</title>
+    <link rel="stylesheet" href="games.css">
+</head>
+<body>
+    <h1>Welcome to Game Selection</h1>
+
+    <!-- Button for the fighting game -->
+    <button onclick="redirectToFightingGame()">Play Fighting Game</button>
+
+    <!-- Button for rock-paper-scissors game -->
+    <button onclick="redirectToRockPaperScissors()">Play Rock-Paper-Scissors</button> 
+    <!-- button for memory game  -->
+    <button onclick="redirectToMemoryGame()">play Memory Game</button>
+
+    <script>
+        function redirectToFightingGame() {
+            // Replace 'fighting_game_url' with the actual URL of the fighting game
+            const fighting_game_url = "http://127.0.0.1:5500/FightingGame/FightingGame.html";
+            window.open(fighting_game_url, '_blank');
+        }
+
+         function redirectToRockPaperScissors() {
+            // Replace 'rps_game_url' with the actual URL of the rock-paper-scissors game
+             const rps_game_url = "http://127.0.0.1:5501/games/RockPaperScissor/RockPaperScissor.html";
+             window.open(rps_game_url, '_blank');
+         }
+         function redirectToMemoryGame() {
+            // Replace 'rps_game_url' with the actual URL of the rock-paper-scissors game
+             const rps_game_url = "http://127.0.0.1:5501/games/MemoryGame/MemoryGame.html";
+             window.open(rps_game_url, '_blank');}
+
+    </script>
+</body>
+</html>
