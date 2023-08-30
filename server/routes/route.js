@@ -7,6 +7,7 @@ const { getLocationFunc, locationVerification } = require('./geoLocation')
 const { logoutFunc, exitScanFunc } = require('./logout')
 const { getTodayData, getAllData, getDataByDate } = require('../db/admin/getData')
 const { getActiveUsers, getChatRoom, fetchAllUserChatRoom, fetchAllUserMessages } = require('./webSocket')
+const { getMaxDate, getMinDate } = require('../util/arryaFunc')
 
 module.exports = (app) => {
     app.get('/', register.homeFunc)
@@ -40,7 +41,8 @@ module.exports = (app) => {
     app.get('/logout', logoutFunc)
 
     //admin -get logs data
-    app.get("/logs/today", verifyToken,register.todayEntries)
+    app.get("/admin/panel", verifyToken, livePage.allowUserPrevileges)
+    app.get("/logs/today", verifyToken, register.todayEntries)
     // app.get("/logs/all", (req, res) => {
     //     getAllData()
     //         .then(result => {
@@ -85,25 +87,59 @@ module.exports = (app) => {
                 let final = []
                 userDetails.forEach(user => {
                     console.log(user)
+                    let timeArray=[]
+                    user.filteredLogs.forEach(logTime => {
+                        logTime.time?timeArray.push(logTime.time):0
+                        logTime.outTime?timeArray.push(logTime.outTime):0
+                    });
+                    console.log(timeArray)
                     final.push({
-                        Name: user.name,
-                        Login: user.filteredLogs[0].time,
-                        Out: user.filteredLogs[1] ? user.filteredLogs[1].outTime : 0
-
+                        Name:user.name,
+                        Out:getMaxDate(timeArray),
+                        Login:getMinDate(timeArray)
                     })
+                    // if (user.filteredLogs.length !== 1) {
+                    //     let login = user.filteredLogs[1].time
+                    //     let out = user.filteredLogs[0].outTime
+                    //     login > out ? final.push({
+                    //         Name: user.name,
+                    //         Login: out,
+                    //         Out: login
+                    //     }) :
+                    //         final.push({
+                    //             Name: user.name,
+                    //             Login: login,
+                    //             Out: out
+                    //         })
+
+                    // } else{
+                    //     let login = user.filteredLogs[0].time
+                    //     let out = user.filteredLogs[0].outTime
+                    //     login > out ? final.push({
+                    //         Name: user.name,
+                    //         Login: out,
+                    //         Out: login
+                    //     }) :
+                    //         final.push({
+                    //             Name: user.name,
+                    //             Login: login,
+                    //             Out: out
+                    //         })
+                    // }
+                        
                 });
                 console.log(final);
                 res.send(final)
             })
     })
 
-    app.get('/list/users/mods',verifyToken,getActiveUsers)
-    
-    app.post('/get/chatroom',verifyToken,getChatRoom)
+    app.get('/list/users/mods', verifyToken, getActiveUsers)
 
-    app.post('/users/chatrooms',verifyToken,fetchAllUserChatRoom)
+    app.post('/get/chatroom', verifyToken, getChatRoom)
 
-    app.post('/users/chatrooms/allmessages',verifyToken,fetchAllUserMessages)
+    app.post('/users/chatrooms', verifyToken, fetchAllUserChatRoom)
+
+    app.post('/users/chatrooms/allmessages', verifyToken, fetchAllUserMessages)
 
 
 }

@@ -47,11 +47,19 @@ async function time(){
                 // document.body.style.backgroundImage=`radial-gradient(ellipse at center,  #d3202f  0%, #000000 70%);`
                 document.body.style.backgroundColor='white'
             }
-
+            return fetch('/admin/panel')
             }
+        })
+        .then(response=>response.json())
+        .then(result=>{
+            console.log(result.msg)
+            if(result.msg) displayLogDetailButton()
         })
 
     
+}
+function displayLogDetailButton() {
+    document.getElementsByClassName('log-detail')[0].style.display='block'
 }
 
 

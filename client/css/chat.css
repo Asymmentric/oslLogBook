@@ -91,3 +91,94 @@
    width: 40%;
    border-radius: 3px;
  }
+ .chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.user-box {
+  width: 200px;
+  max-width: 200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.user-burb {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.active-status {
+  color: green;
+}
+
+.chat-content {
+  width: 100%;
+  height: calc(100% - 200px);
+  /* overflow: auto; */
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.prev-msg {
+  margin-top: 10px;
+}
+
+.rec-msg {
+  color: #666;
+}
+
+.send-box {
+  /* width: 100%; */
+  bottom: 0;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  /* Add some space between the message input and send button */
+  margin-bottom: 10px;
+}
+
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.msg-send-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .chat-container {
+    flex-direction: column-reverse;
+    width: 100vw;
+  }
+
+  .user-box {
+    width: 100%;
+  }
+
+  .chat-content {
+    width: 100%;
+    height: auto;
+  }
+}
