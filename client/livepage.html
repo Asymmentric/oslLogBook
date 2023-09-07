@@ -23,6 +23,8 @@
         <div id="exit-container">
             <p class="exitLog">Log your Exit</p>
         </div>
+        <!-- <button onclick="redirectToGamePage()">Play  Games</button> -->
+        <a href="games.html"><button>Play  Games</button></a>
 
         <a href="/logout">
             <p class="logout" id="logout">Logout</p>
@@ -58,6 +60,13 @@
     <script src="/client/script/livepage.js"></script>
     <script src="/client/script/chat.js"></script>
     
+
+<script>
+    function redirectToGamePage() {
+        
+        window.location.href = "http://127.0.0.1:5501/games/Games/games.html";
+    }
+</script>
 </body>
 
 </html>
