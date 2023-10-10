@@ -1,14 +1,14 @@
 const { users } = require('../userSchema')
 
-exports.exitLog = async (usn, userDateTime) => {
+exports.exitLog = async (usn, userDateTime,lastLogin) => {
     let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
 
     return new Promise((resolve, reject) => {
-        users.findOneAndUpdate({ usn }, {
+        users.findOneAndUpdate({ usn ,"logsData.time":lastLogin}, {
             lastOut: userDateTime,
             currentLogStatus: false,
             $set: {
-                "logsData.0.outTime": userDateTime
+                "logsData.$.outTime": userDateTime
                 }
         },{
             returnDocument:'after'

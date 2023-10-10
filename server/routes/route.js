@@ -85,18 +85,19 @@ module.exports = (app) => {
             .then(result => {
                 let userDetails = result
                 let final = []
+                console.log(userDetails)
                 userDetails.forEach(user => {
                     console.log(user)
-                    let timeArray=[]
+                    let timeArray = []
                     user.filteredLogs.forEach(logTime => {
-                        logTime.time?timeArray.push(logTime.time):0
-                        logTime.outTime?timeArray.push(logTime.outTime):0
+                        logTime.time ? timeArray.push(logTime.time) : 0
+                        logTime.outTime ? timeArray.push(logTime.outTime) : 0
                     });
                     console.log(timeArray)
                     final.push({
-                        Name:user.name,
-                        Out:getMaxDate(timeArray),
-                        Login:getMinDate(timeArray)
+                        Name: user.name,
+                        Out: getMaxDate(timeArray),
+                        Login: getMinDate(timeArray)
                     })
                     // if (user.filteredLogs.length !== 1) {
                     //     let login = user.filteredLogs[1].time
@@ -126,7 +127,7 @@ module.exports = (app) => {
                     //             Out: out
                     //         })
                     // }
-                        
+
                 });
                 console.log(final);
                 res.send(final)

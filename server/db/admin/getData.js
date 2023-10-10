@@ -62,20 +62,12 @@ exports.getDataByDate = (date) => {
                             input: "$logsData",
                             as: "log",
                             cond: {
-                                // $or:[
-                                //     {
+                                
                                         $and: [
                                             { $gte: ["$$log.time", currentDate] },
                                             { $lte: ["$$log.time", nextDate] }
                                         ]
-                                //     },
-                                //     {
-                                //         $and: [
-                                //             { $gte: ["$$log.outTime", currentDate] },
-                                //             { $lte: ["$$log.outTime", nextDate] }
-                                //         ]
-                                //     }
-                                // ]
+                                        
                             }
                         }
                     }

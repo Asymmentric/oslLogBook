@@ -3,6 +3,7 @@ const { users } = require('../userSchema')
 exports.scanLog = async function scanLog(usn, ip, useragent, userDateTime, newUser) {
     console.log(usn, ip, useragent, userDateTime)
 
+    //get date and time for starting of the day
     let dayStart = new Date(userDateTime.getFullYear(), userDateTime.getMonth(), userDateTime.getDate())
     if(newUser){
         return new Promise((resolve, reject) => {
