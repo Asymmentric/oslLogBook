@@ -91,7 +91,7 @@ const generateToken = async (payload, refresh) => {
 const verifyToken = async (req, res, next) => {
     console.log('989', req.headers.referer)
 
-    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/livepage','/list/users/mods','/get/chatroom','/users/chatrooms','/users/chatrooms/allmessages']
+    let afterAuthUrls = ['/osllog/api/v1/scan/entry', '/livepage','/list/users/mods','/get/chatroom','/users/chatrooms','/users/chatrooms/allmessages','/admin/panel']
 
     let moderatorUrls = ['/logs/today']
 

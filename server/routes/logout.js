@@ -20,7 +20,7 @@ exports.exitScanFunc = (req, res) => {
                 console.log("last->", lastLoginDetails.userData.currentLogStatus)
                 if (lastLoginDetails.userData.lastLogin < userDateTime) {
                     console.log(`Logging...`)
-                    return exitLog(usn, userDateTime)
+                    return exitLog(usn, userDateTime,lastLoginDetails.userData.lastLogin)
                 }
                 else {
                     console.log(`parse`)

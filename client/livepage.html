@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/client/css/livepage.css">
 
     <link rel="stylesheet" href="/client/css/chat.css">
-    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    
 </head>
 
 <body>
@@ -23,6 +23,7 @@
         <div id="exit-container">
             <p class="exitLog">Log your Exit</p>
         </div>
+        
 
         <a href="/logout">
             <p class="logout" id="logout">Logout</p>
@@ -53,11 +54,24 @@
                 </div>
             </div>
         </div>
+        <a class="log-detail" href="/logs/today">
+            <div class="get-log-btn">Get Log Details</div>
+        </a>
+        
+            
+        
 
     </div>
     <script src="/client/script/livepage.js"></script>
     <script src="/client/script/chat.js"></script>
     
+
+<script>
+    function redirectToGamePage() {
+        
+        window.location.href = "http://127.0.0.1:5501/games/Games/games.html";
+    }
+</script>
 </body>
 
 </html>
