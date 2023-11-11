@@ -4,7 +4,6 @@ const path=require('path')
 const cookieParser=require('cookie-parser')
 const dotenv=require('dotenv').config()
 const session=require('express-session')
-const url=require('node:url')
 const http=require('http')
 
 const routes=require('./routes/route')
