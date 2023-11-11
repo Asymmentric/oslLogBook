@@ -138,7 +138,7 @@ function initConn() {
 
 function createWebSocketConnection() {
 
-    return new WebSocket('wss://logbookosl.azurewebsites.net')
+    return new WebSocket(window.location.origin)
     // return new WebSocket('ws://localhost:9090')
 }
 
