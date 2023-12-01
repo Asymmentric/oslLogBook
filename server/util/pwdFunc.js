@@ -22,8 +22,8 @@ let validateRegistration=(req,res,next)=>{
     let {usn,email,name,password}=req.body
     
     if(email && usn && name){
-        const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((email).toLowerCase())
-        const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(usn)
+        const emailOK=/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is.test((email).toLowerCase())
+        const usnOK=/^(4vv|vvce)[a-z0-9]*\d$/is.test(usn)
         if((emailOK && password) && (usnOK && password)) next()
         else return res.send({err:true,msg:'Invalid Email or USN'})
     }
@@ -36,8 +36,8 @@ let validateRegistration=(req,res,next)=>{
 let validateLogin=(req,res,next)=>{
     let {userId}=req.body
     if(userId){
-        const emailOK=(/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is).test((userId).toLowerCase())
-        const usnOK=(/^(4vv|vvce)[a-z0-9]*\d$/is).test(userId)
+        const emailOK=/^\w+([\.-]?\w+)*@vvce\.ac\.in$/is.test((userId).toLowerCase())
+        const usnOK=/^(4vv|vvce)[a-z0-9]*\d$/is.test(userId)
         if((emailOK && req.body.password) || (usnOK && req.body.password)) next()
         else return res.send({err:true,msg:'Invalid Email or USN'})
     }
